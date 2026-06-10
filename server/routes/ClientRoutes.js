@@ -7,16 +7,28 @@ import {
   deleteClient,
 } from "../services/ClientServices.js";
 import protectedRoute from "../middlewares/protected.js";
+import {
+  GetClientValidator,
+  CreateClientValidator,
+  UpdateClientValidator,
+  DeleteClientValidator,
+} from "../validators/ClientValidator.js";
+
 const ClientRouter = express.Router();
 
-ClientRouter.post("/", protectedRoute, createNewClient);
+ClientRouter.post("/", protectedRoute, CreateClientValidator, createNewClient);
 
 ClientRouter.get("/", protectedRoute, getAllClients);
 
-ClientRouter.get("/:id", protectedRoute, getSpecificClient);
+ClientRouter.get("/:id", protectedRoute, GetClientValidator, getSpecificClient);
 
-ClientRouter.put("/:id" , protectedRoute , updateClient);
+ClientRouter.put("/:id", protectedRoute, UpdateClientValidator, updateClient);
 
-ClientRouter.delete("/:id", protectedRoute, deleteClient);
+ClientRouter.delete(
+  "/:id",
+  protectedRoute,
+  DeleteClientValidator,
+  deleteClient,
+);
 
 export default ClientRouter;

@@ -7,17 +7,43 @@ import {
   updateInvoice,
   deleteInvoice,
 } from "../services/InvoiceServices.js";
+import {
+  GetInvoicetValidator,
+  CreateInvoicetValidator,
+  UpdateInvoicetValidator,
+  DeleteInvoicetValidator,
+} from "../validators/InvoiceValidator.js";
 
 const InvoiceRouter = express.Router();
 
-InvoiceRouter.post("/", protectedRoute, createNewInvoice);
+InvoiceRouter.post(
+  "/",
+  protectedRoute,
+  CreateInvoicetValidator,
+  createNewInvoice,
+);
 
 InvoiceRouter.get("/", protectedRoute, getAllInvoices);
 
-InvoiceRouter.get("/:id", protectedRoute, getSpecificInvoice);
+InvoiceRouter.get(
+  "/:id",
+  protectedRoute,
+  GetInvoicetValidator,
+  getSpecificInvoice,
+);
 
-InvoiceRouter.put("/:id", protectedRoute, updateInvoice);
+InvoiceRouter.put(
+  "/:id",
+  protectedRoute,
+  UpdateInvoicetValidator,
+  updateInvoice,
+);
 
-InvoiceRouter.delete("/:id", protectedRoute, deleteInvoice);
+InvoiceRouter.delete(
+  "/:id",
+  protectedRoute,
+  DeleteInvoicetValidator,
+  deleteInvoice,
+);
 
 export default InvoiceRouter;

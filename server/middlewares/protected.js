@@ -1,3 +1,4 @@
+import ApiError from "../errors/ApiError.js";
 import UserModel from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
 
@@ -19,9 +20,7 @@ const protectedRoute = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
+    return next(new ApiError(error , 500));
   }
 };
 
