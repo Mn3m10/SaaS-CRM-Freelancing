@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Project | Kinetic Ledger CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#191c1d",
+                        "secondary-fixed": "#dce1ff",
+                        "outline-variant": "#c3c6d7",
+                        "on-secondary-fixed": "#00164e",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary-container": "#1d3989",
+                        "outline": "#737686",
+                        "primary": "#004ac6",
+                        "surface": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#264191",
+                        "on-tertiary-fixed": "#141b2b",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "secondary-fixed-dim": "#b6c4ff",
+                        "on-primary-container": "#eeefff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#ecf0ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "primary-container": "#2563eb",
+                        "background": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary": "#4e5566",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#0053db",
+                        "on-surface-variant": "#434655",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary-fixed-dim": "#c0c6db",
+                        "on-surface": "#191c1d",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed": "#00174b",
+                        "on-tertiary-fixed-variant": "#404758",
+                        "tertiary-container": "#666d7f",
+                        "secondary": "#4059aa",
+                        "tertiary-fixed": "#dce2f7",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-container": "#8fa7fe",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "sidebar-width": "260px",
+                        "container-max": "1440px",
+                        "base": "8px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-focus-ring:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="w-[260px] h-full fixed left-0 top-0 bg-secondary-fixed-dim dark:bg-on-primary-fixed flex flex-col py-lg px-md z-50">
+<div class="mb-xl px-sm">
+<h1 class="text-headline-md font-headline-md text-on-secondary-fixed">CRM Pro</h1>
+<p class="font-body-md text-body-md opacity-80 text-on-secondary-fixed-variant">Freelancer Edition</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-md px-sm py-md rounded-lg hover:bg-primary/5 transition-colors text-on-secondary-fixed-variant opacity-80 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg hover:bg-primary/5 transition-colors text-on-secondary-fixed-variant opacity-80 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-md text-body-md">Clients</span>
+</a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg text-primary-fixed bg-primary/10 font-bold scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-body-md text-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg hover:bg-primary/5 transition-colors text-on-secondary-fixed-variant opacity-80 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">checklist</span>
+<span class="font-body-md text-body-md">Tasks</span>
+</a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg hover:bg-primary/5 transition-colors text-on-secondary-fixed-variant opacity-80 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-md text-body-md">Invoices</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-white/10">
+<button class="w-full bg-primary-container text-white py-md rounded-lg font-label-md text-label-md flex items-center justify-center gap-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+                New Project
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[260px] flex flex-col">
+<!-- TopNavBar Component -->
+<header class="h-16 fixed top-0 right-0 left-[260px] bg-surface border-b border-outline-variant flex items-center justify-between px-lg z-40">
+<div class="flex items-center bg-surface-container-low px-md py-xs rounded-full border border-outline-variant/30 w-96">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-md font-label-md w-full ml-sm" placeholder="Search anything..." type="text"/>
+</div>
+<div class="flex items-center gap-lg">
+<button class="relative hover:bg-surface-container-low p-xs rounded-full transition-colors opacity-80 active:opacity-100">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="hover:bg-surface-container-low p-xs rounded-full transition-colors opacity-80 active:opacity-100">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary/20 overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsCuETuPwG6KpzgEtK23FLb7w2VIIPKE6fWgk970_AHeSOMyAtz-NUm_Aqo9lGq_rHOcw_uUt3VWUKyzWj9uMuUl40m0AsKjlE6TePJ-hv4K7dOE-1hnHt4LpsmCxaIPOn8m_JNPauBYjTuhyjuIjgGc3hWzdWXLIyCLT-EAv_coOEXwqDisk-r20qtrjOmY_STCbFq4lgW85rtb50GL3tFzsVrwUvyzwO01L0x2hmAvdR7ofA0bpfOPbBK1JhMkZ7LBDAFzpxXkdd"/>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="mt-16 p-xl flex-1 flex flex-col items-center justify-center">
+<!-- Form Header Section -->
+<div class="w-full max-w-2xl mb-xl text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-xs">Create New Project</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Define the scope and timeline for your next big venture.</p>
+</div>
+<!-- Main Form Card -->
+<div class="w-full max-w-2xl bg-white border border-outline-variant rounded-xl p-xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)]">
+<form class="space-y-lg" onsubmit="event.preventDefault();">
+<!-- Project Title -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block" for="project-title">Project Title</label>
+<input class="w-full h-[40px] px-md border border-outline-variant rounded-lg form-focus-ring font-body-md text-body-md" id="project-title" placeholder="e.g. Q4 Brand Refresh" type="text"/>
+</div>
+<!-- Description -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block" for="description">Description</label>
+<textarea class="w-full p-md border border-outline-variant rounded-lg form-focus-ring font-body-md text-body-md resize-none" id="description" placeholder="Briefly describe the project objectives and deliverables..." rows="4"></textarea>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Client Selection -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block" for="client">Client</label>
+<div class="relative">
+<select class="w-full h-[40px] px-md pr-xl border border-outline-variant rounded-lg form-focus-ring font-body-md text-body-md appearance-none bg-white" id="client">
+<option disabled="" selected="" value="">Select a client</option>
+<option value="1">Acme Corp</option>
+<option value="2">Global Dynamics</option>
+<option value="3">Initech Solutions</option>
+<option value="4">Pied Piper</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Deadline -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block" for="deadline">Deadline</label>
+<div class="relative">
+<input class="w-full h-[40px] px-md border border-outline-variant rounded-lg form-focus-ring font-body-md text-body-md" id="deadline" type="date"/>
+</div>
+</div>
+</div>
+<!-- Form Divider -->
+<div class="h-[1px] bg-outline-variant/30 my-xl"></div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-end gap-md">
+<button class="px-xl h-[40px] bg-white border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors active:scale-[0.98]" type="button">
+                            Cancel
+                        </button>
+<button class="px-xl h-[40px] bg-primary-container text-white rounded-lg font-label-md text-label-md shadow-[0_2px_0_rgba(0,0,0,0.05)] hover:opacity-90 active:scale-[0.98] transition-all flex items-center gap-sm" type="submit">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                            Create Project
+                        </button>
+</div>
+</form>
+</div>
+<!-- Atmospheric Background Graphic -->
+<div class="fixed bottom-0 right-0 w-[400px] h-[400px] -z-10 opacity-20 pointer-events-none overflow-hidden">
+
+</div>
+<!-- Additional Detail/Tips for user -->
+<div class="mt-xl w-full max-w-2xl grid grid-cols-1 md:grid-cols-3 gap-lg opacity-60">
+<div class="flex flex-col items-center text-center p-md">
+<span class="material-symbols-outlined text-primary mb-xs">lightbulb</span>
+<p class="font-label-sm text-label-sm">Use clear, action-oriented titles.</p>
+</div>
+<div class="flex flex-col items-center text-center p-md">
+<span class="material-symbols-outlined text-primary mb-xs">event</span>
+<p class="font-label-sm text-label-sm">Deadlines sync with your calendar.</p>
+</div>
+<div class="flex flex-col items-center text-center p-md">
+<span class="material-symbols-outlined text-primary mb-xs">share</span>
+<p class="font-label-sm text-label-sm">Clients get instant notifications.</p>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction for form inputs
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+
+        // Simple button active state visual
+        const primaryBtn = document.querySelector('button[type="submit"]');
+        if(primaryBtn) {
+            primaryBtn.addEventListener('click', function() {
+                this.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Processing...';
+                setTimeout(() => {
+                   this.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Create Project';
+                }, 2000);
+            });
+        }
+    </script>
+</body></html>

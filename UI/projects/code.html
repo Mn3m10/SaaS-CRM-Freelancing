@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Projects Management | CRM Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#00174b",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#666d7f",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-container": "#edeeef",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9fa",
+                        "on-tertiary-fixed-variant": "#404758",
+                        "on-tertiary-fixed": "#141b2b",
+                        "tertiary-fixed-dim": "#c0c6db",
+                        "on-background": "#191c1d",
+                        "surface-tint": "#0053db",
+                        "inverse-primary": "#b4c5ff",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "outline": "#737686",
+                        "on-surface-variant": "#434655",
+                        "secondary-fixed-dim": "#b6c4ff",
+                        "secondary-fixed": "#dce1ff",
+                        "secondary-container": "#8fa7fe",
+                        "primary": "#004ac6",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#4e5566",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-container": "#ecf0ff",
+                        "tertiary-fixed": "#dce2f7",
+                        "on-secondary-fixed-variant": "#264191",
+                        "on-primary-container": "#eeefff",
+                        "primary-fixed": "#dbe1ff",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c3c6d7",
+                        "secondary": "#4059aa",
+                        "on-secondary-fixed": "#00164e",
+                        "on-secondary-container": "#1d3989",
+                        "primary-container": "#2563eb",
+                        "surface-bright": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "inverse-surface": "#2e3132",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "sidebar-width": "260px",
+                        "gutter": "24px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "container-max": "1440px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E5E7EB;
+            border-radius: 10px;
+        }
+        .project-card-hover:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- SideNavBar (from JSON) -->
+<aside class="w-[260px] h-full fixed left-0 top-0 bg-secondary-fixed-dim dark:bg-on-primary-fixed flex flex-col h-full py-lg px-md z-50">
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-headline-md">CP</div>
+<div>
+<h1 class="font-headline-md text-on-secondary-fixed text-headline-md leading-tight">CRM Pro</h1>
+<p class="text-on-secondary-fixed-variant opacity-80 text-label-sm">Freelancer Edition</p>
+</div>
+</div>
+<nav class="flex-1 space-y-xs">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary-fixed-variant opacity-80 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary-fixed-variant opacity-80 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-body-md text-body-md">Clients</span>
+</a>
+<!-- ACTIVE STATE: Projects -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed bg-primary/10 font-bold group" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-body-md text-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary-fixed-variant opacity-80 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-body-md text-body-md">Tasks</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-secondary-fixed-variant opacity-80 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-body-md text-body-md">Invoices</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-on-secondary-fixed-variant/10">
+<button class="w-full bg-primary text-on-primary py-md rounded-lg font-label-md flex items-center justify-center gap-xs active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+                New Project
+            </button>
+</div>
+</aside>
+<!-- TopNavBar (from JSON) -->
+<header class="h-16 fixed top-0 right-0 left-[260px] bg-surface dark:bg-on-background flex items-center justify-between px-lg border-b border-outline-variant z-40">
+<div class="flex items-center w-1/2">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary text-body-sm" placeholder="Search projects, tasks, or clients..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-sm">
+<div class="text-right hidden sm:block">
+<p class="text-label-md text-on-surface leading-none">Alex Rivers</p>
+<p class="text-label-sm text-on-surface-variant">Admin</p>
+</div>
+<img alt="User Profile" class="w-10 h-10 rounded-full border border-outline-variant object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeJJ-bFfWCAMA7-L2-8GD3YdXI03ZLzijkkp-DSnMrGZM1flQ67tBkqud3CYZ-cyW0btYcMTJvxG9T2cAXmWHv0AQVTn7HlNUQkIR_kwltcAd-pv8rKCMniMUbvsin9QzEBNRk8HUEAcX97cOBU0kpW-uMC_cd8D_B1RI5Tz5gU8Bw3r1zY7Ll5wE4rBwmoNwlVF5RIRoSVerIlt1eS0FQc-zL7PFaEqbh3eikQeq59sw7zJqy7m_OTtL-CHG7LUaBZcxzneaXMpli"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[260px] pt-16 min-h-screen">
+<div class="p-lg max-w-[1440px] mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-lg gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Projects</h2>
+<p class="text-body-md text-on-surface-variant mt-xs">Manage and track your active workflow.</p>
+</div>
+<div class="flex items-center gap-sm">
+<div class="flex p-1 bg-surface-container rounded-lg border border-outline-variant">
+<button class="flex items-center gap-xs px-md py-1.5 rounded-md bg-white shadow-sm text-primary font-label-md transition-all" id="tableViewBtn">
+<span class="material-symbols-outlined text-[18px]" data-icon="table_rows">table_rows</span>
+                            Table View
+                        </button>
+<button class="flex items-center gap-xs px-md py-1.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md transition-all" id="boardViewBtn">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+                            Board View
+                        </button>
+</div>
+</div>
+</div>
+<!-- Filters & Actions -->
+<div class="bg-white border border-outline-variant rounded-xl p-md mb-lg flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-sm flex-wrap">
+<button class="flex items-center gap-xs px-md py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-xs px-md py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md">
+<span class="material-symbols-outlined text-[20px]" data-icon="sort">sort</span>
+                        Sort: Due Date
+                    </button>
+<div class="h-6 w-[1px] bg-outline-variant mx-xs"></div>
+<div class="flex items-center gap-xs">
+<span class="text-label-sm text-on-surface-variant px-2 py-1 bg-surface-container-low rounded-full">All: 24</span>
+<span class="text-label-sm text-on-surface-variant px-2 py-1 hover:bg-surface-container-low rounded-full cursor-pointer">Active: 12</span>
+<span class="text-label-sm text-on-surface-variant px-2 py-1 hover:bg-surface-container-low rounded-full cursor-pointer">Completed: 8</span>
+</div>
+</div>
+<div class="flex items-center gap-md ml-auto">
+<div class="flex -space-x-2">
+<img alt="Team member" class="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" data-alt="A close-up professional headshot of a team member in a high-tech corporate office. The background is softly blurred with cool blue and white tones, suggesting a clean, minimalist workspace. The lighting is crisp and natural, highlighting a friendly yet focused expression suitable for a premium business application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwpbzKDuQ0nW1A_14FuBc8OMk2RmatR5Oh2C316rZzcfhhPvCpttGBuFIs-SfvxjSh0vT0N28G5L5LRJLvaud0VEFR3mISWJyxdFmT-N_Mhq3iLQTr1CCV1aj0qmnkQbChler1CzuHpzBfhTIFyctjVpUB2Jrq2Xi9kVjO9qJ9HPh-uF-n2WNOywevrYxhc-N5cYl380gCiuXruIDqinEYtSmuLh__D4nNTFlliyFm3V226H35auSVSmm2FT2Dfqlgd9E87ABhRuI3"/>
+<img alt="Team member" class="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" data-alt="A portrait of a creative professional woman in a modern design studio environment. Soft ambient light from large windows creates a bright and airy atmosphere. The color palette is composed of soft neutrals and whites with sharp, modern contrast. The image conveys high-fidelity professionalism and effortless efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Oegokx0s0XI7BRXgWJ1yJRGhC_mSLgi858Fx8XeFcb6sM_CIr7h7g-99jrFlOsE-vXeEANESJRBZ9EhGWUlCs-zdGDLbB4gYfH2nFYg17kOv_i0Gp4oZ02Fg01tI8yDeBBFmUd4XInzCNjDsp0o65tp5H2efCAAN6HwJWK43r5OGiMA8lVTslPJQfQQrRbUP6xEYAdMaiaWV4vX567Du6AmRjAoLx0vgDD_No7Zmb0776DlpR20glb2AGDKpuVT9eHi0xQLpWKS0"/>
+<img alt="Team member" class="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" data-alt="A sophisticated business profile photo featuring a diverse male professional in a minimalist setting. The background is a clean, off-white wall with subtle architectural shadows. The lighting is high-key and professional, focusing on the clarity and detail of the subject, matching a high-end corporate brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEZex_d0iz-qmcLJZnuP0WsWYFiZOwn-VEC_ka0s43kEoSKJjnuSCD2eZoRFjYFwDh8EZ7QyvkLMY75HeFGDZdFrE7wlN8R2t9lEmAuUPLGneNosl-4ViVH2_JDKARSQOtIWOlmF_rt_WILvY8fqeyPfm7QdTVFPYG5_D_rNA8R_nJWEnaNkY4hGGvTKg_IjmNhynmKFhlRoMQsVTHdMJszBeWPrLMHqD7enQsQYMQawqyrAEiDm3fh0_ozFSv6B57FKqXghDVhQad"/>
+<div class="flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-surface-container-high text-label-sm font-bold text-on-surface-variant">+4</div>
+</div>
+</div>
+</div>
+<!-- Table Section -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Project Name</th>
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Client</th>
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Start / Due Date</th>
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Progress</th>
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Budget</th>
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-lg py-md text-label-sm font-bold text-on-surface-variant uppercase tracking-wider"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1: Overdue -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">Website Redesign</span>
+<span class="text-body-sm text-on-surface-variant">Marketing Revamp</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded bg-secondary-container flex items-center justify-center text-[10px] font-bold text-on-secondary-container">N</div>
+<span class="text-body-sm">NexGen Corp</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col text-body-sm">
+<span class="text-on-surface">Oct 12, 2023</span>
+<span class="text-error font-medium">Dec 01, 2023</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="w-32">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-bold text-on-surface-variant">45%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 45%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="text-body-sm font-medium">$12,500</span>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#fee2e2] text-[#991b1b]">
+                                        OVERDUE
+                                    </span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="p-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Pending -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">SaaS Dashboard</span>
+<span class="text-body-sm text-on-surface-variant">UI/UX Design</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-on-primary-fixed">L</div>
+<span class="text-body-sm">Linear Systems</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col text-body-sm">
+<span class="text-on-surface">Nov 05, 2023</span>
+<span class="text-on-surface-variant">Jan 15, 2024</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="w-32">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-bold text-on-surface-variant">72%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 72%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="text-body-sm font-medium">$8,200</span>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#ffedd5] text-[#9a3412]">
+                                        PENDING
+                                    </span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="p-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Completed -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">App Onboarding Flow</span>
+<span class="text-body-sm text-on-surface-variant">Mobile Dev</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded bg-tertiary-fixed flex items-center justify-center text-[10px] font-bold text-on-tertiary-fixed">F</div>
+<span class="text-body-sm">Flow Labs</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col text-body-sm">
+<span class="text-on-surface">Sep 20, 2023</span>
+<span class="text-on-surface-variant">Oct 30, 2023</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="w-32">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-bold text-on-surface-variant">100%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 100%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="text-body-sm font-medium">$4,500</span>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#d1fae5] text-[#065f46]">
+                                        COMPLETED
+                                    </span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="p-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Pending -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">E-commerce API Integration</span>
+<span class="text-body-sm text-on-surface-variant">Backend Systems</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded bg-secondary-fixed flex items-center justify-center text-[10px] font-bold text-on-secondary-fixed">S</div>
+<span class="text-body-sm">Stripey Co</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col text-body-sm">
+<span class="text-on-surface">Dec 01, 2023</span>
+<span class="text-on-surface-variant">Feb 15, 2024</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="w-32">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-bold text-on-surface-variant">15%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 15%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="text-body-sm font-medium">$22,000</span>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#ffedd5] text-[#9a3412]">
+                                        PENDING
+                                    </span>
+</td>
+<td class="px-lg py-md text-right">
+<button class="p-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="bg-surface-container-low px-lg py-md border-t border-outline-variant flex items-center justify-between">
+<span class="text-body-sm text-on-surface-variant">Showing 1-10 of 24 projects</span>
+<div class="flex items-center gap-xs">
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-white transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded-lg font-label-md">1</button>
+<button class="px-3 py-1 hover:bg-white rounded-lg font-label-md">2</button>
+<button class="px-3 py-1 hover:bg-white rounded-lg font-label-md">3</button>
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dashboard Stats Preview (Extra Layer of UI) -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="bg-white border border-outline-variant rounded-xl p-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-lg opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[48px]" data-icon="payments">payments</span>
+</div>
+<p class="text-label-sm font-bold text-on-surface-variant uppercase mb-xs">Total Pipeline</p>
+<h3 class="text-headline-md font-headline-md text-on-surface">$142,500.00</h3>
+<div class="mt-md flex items-center gap-xs text-success">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+<span class="text-label-sm font-bold">12% from last month</span>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl p-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-lg opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[48px]" data-icon="hourglass_empty">hourglass_empty</span>
+</div>
+<p class="text-label-sm font-bold text-on-surface-variant uppercase mb-xs">Hours Billable</p>
+<h3 class="text-headline-md font-headline-md text-on-surface">348.5 hrs</h3>
+<div class="mt-md flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="text-label-sm font-bold">Current month total</span>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl p-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-lg opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[48px]" data-icon="check_circle">check_circle</span>
+</div>
+<p class="text-label-sm font-bold text-on-surface-variant uppercase mb-xs">Completion Rate</p>
+<h3 class="text-headline-md font-headline-md text-on-surface">94.2%</h3>
+<div class="mt-md flex items-center gap-xs text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-label-sm font-bold">Exceeding targets</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        const tableViewBtn = document.getElementById('tableViewBtn');
+        const boardViewBtn = document.getElementById('boardViewBtn');
+
+        tableViewBtn.addEventListener('click', () => {
+            tableViewBtn.classList.add('bg-white', 'shadow-sm', 'text-primary');
+            tableViewBtn.classList.remove('text-on-surface-variant');
+            boardViewBtn.classList.remove('bg-white', 'shadow-sm', 'text-primary');
+            boardViewBtn.classList.add('text-on-surface-variant');
+        });
+
+        boardViewBtn.addEventListener('click', () => {
+            boardViewBtn.classList.add('bg-white', 'shadow-sm', 'text-primary');
+            boardViewBtn.classList.remove('text-on-surface-variant');
+            tableViewBtn.classList.remove('bg-white', 'shadow-sm', 'text-primary');
+            tableViewBtn.classList.add('text-on-surface-variant');
+            // Logic to switch view would go here
+        });
+
+        // Add micro-interaction for rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+</body></html>
