@@ -1,5 +1,5 @@
-import { model } from "mongoose";
 import ApiError from "../errors/ApiError.js";
+import ApiFeatures from "./ApiFeatures.js";
 
 const CreateOne = (model) => {
   return async (req, res, next) => {
@@ -18,10 +18,19 @@ const CreateOne = (model) => {
 const GetAllDocuments = (model) => {
   return async (req, res, next) => {
     try {
-      const documents = await model.find();
       const documentCount = await model.countDocuments();
+      const apifeature = new ApiFeatures(model.find() , req.query);
+      apifeature
+      .pagination(documentCount)
+      .filter()
+      .sort()
+      .limitingFields()
+      .search();
+      const {mongooseQuery , paginationResult} = apifeature;
+      const documents = await mongooseQuery;
       return res.status(200).json({
         message: "All Documents:",
+        paginationResult,
         documentCount,
         data: documents,
       });

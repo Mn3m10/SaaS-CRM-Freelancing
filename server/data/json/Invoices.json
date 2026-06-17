@@ -1,0 +1,74 @@
+[
+  {
+    "amount": 15000.00,
+    "invoiceNumber": "INV-2026-001",
+    "status": "pending",
+    "dueDate": "2026-07-15T00:00:00.000Z",
+    "user": "6a3296b75a3f113cbef00f8b",
+    "client": "6a329d90931eb5fc56aeeeef",
+    "project": "6a329f8f0a58bff5c14aa143"
+  },
+  {
+    "amount": 25000.50,
+    "invoiceNumber": "INV-2026-002",
+    "status": "paid",
+    "dueDate": "2026-06-30T00:00:00.000Z",
+    "user": "6a3296b75a3f113cbef00f8b",
+    "client": "6a329d90931eb5fc56aeeef0",
+    "project": "6a329f8f0a58bff5c14aa144"
+  },
+  {
+    "amount": 8750.75,
+    "invoiceNumber": "INV-2026-003",
+    "status": "overdue",
+    "dueDate": "2026-05-01T00:00:00.000Z",
+    "user": "6a3296db5a3f113cbef00f8c",
+    "client": "6a329d90931eb5fc56aeeef2",
+    "project": "6a329f8f0a58bff5c14aa145"
+  },
+  {
+    "amount": 32000.00,
+    "invoiceNumber": "INV-2026-004",
+    "status": "pending",
+    "dueDate": "2026-08-30T00:00:00.000Z",
+    "user": "6a3296e65a3f113cbef00f8d",
+    "client": "6a329d90931eb5fc56aeeef4",
+    "project": "6a329f8f0a58bff5c14aa146"
+  },
+  {
+    "amount": 45000.00,
+    "invoiceNumber": "INV-2026-005",
+    "status": "pending",
+    "dueDate": "2026-09-15T00:00:00.000Z",
+    "user": "6a3296e65a3f113cbef00f8d",
+    "client": "6a329d90931eb5fc56aeeef5",
+    "project": "6a329f8f0a58bff5c14aa147"
+  },
+  {
+    "amount": 18500.25,
+    "invoiceNumber": "INV-2026-006",
+    "status": "cancelled",
+    "dueDate": "2026-07-01T00:00:00.000Z",
+    "user": "6a3296f35a3f113cbef00f8e",
+    "client": "6a329d90931eb5fc56aeeef6",
+    "project": "6a329f8f0a58bff5c14aa148"
+  },
+  {
+    "amount": 12000.00,
+    "invoiceNumber": "INV-2026-007",
+    "status": "paid",
+    "dueDate": "2026-04-15T00:00:00.000Z",
+    "user": "6a3297035a3f113cbef00f8f",
+    "client": "6a329d90931eb5fc56aeeef7",
+    "project": "6a329f8f0a58bff5c14aa149"
+  },
+  {
+    "amount": 22500.00,
+    "invoiceNumber": "INV-2026-008",
+    "status": "pending",
+    "dueDate": "2026-10-01T00:00:00.000Z",
+    "user": "6a3297125a3f113cbef00f90",
+    "client": "6a329d90931eb5fc56aeeef9",
+    "project": "6a329f8f0a58bff5c14aa14b"
+  }
+]

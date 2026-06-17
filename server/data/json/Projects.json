@@ -1,0 +1,82 @@
+[
+  {
+    "title": "Network Upgrade 2026",
+    "description": "Complete network infrastructure upgrade across 5 branches",
+    "status": "pending",
+    "deadline": "2026-08-15T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeeef",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "title": "Mobile Banking App",
+    "description": "Develop and deploy mobile banking application",
+    "status": "completed",
+    "deadline": "2026-05-30T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef0",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "title": "Hospital Management System",
+    "description": "Implement new digital patient management system",
+    "status": "pending",
+    "deadline": "2026-09-01T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef2",
+    "user": "6a3296db5a3f113cbef00f8c"
+  },
+  {
+    "title": "Port Automation Project",
+    "description": "Digitalize and automate cargo handling operations",
+    "status": "overdue",
+    "deadline": "2026-04-01T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef4",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "title": "Residential Complex Dev",
+    "description": "Construction project for 200 luxury villas",
+    "status": "pending",
+    "deadline": "2026-12-01T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef5",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "title": "Oil Refinery Expansion",
+    "description": "Expand refinery capacity to meet demand",
+    "status": "pending",
+    "deadline": "2026-10-15T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef6",
+    "user": "6a3296f35a3f113cbef00f8e"
+  },
+  {
+    "title": "Hotel Booking Platform",
+    "description": "Create new online reservation platform",
+    "status": "completed",
+    "deadline": "2026-03-15T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef7",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "title": "Food Distribution System",
+    "description": "Implement supply chain and logistics platform",
+    "status": "pending",
+    "deadline": "2026-07-30T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef8",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "title": "Auto Dealership ERP",
+    "description": "Enterprise resource planning system integration",
+    "status": "cancelld",
+    "deadline": "2026-06-01T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeef9",
+    "user": "6a3297125a3f113cbef00f90"
+  },
+  {
+    "title": "IT Consulting Expansion",
+    "description": "Launch new IT consulting division and services",
+    "status": "pending",
+    "deadline": "2026-09-30T00:00:00.000Z",
+    "client": "6a329d90931eb5fc56aeeefa",
+    "user": "6a3297125a3f113cbef00f90"
+  }
+]

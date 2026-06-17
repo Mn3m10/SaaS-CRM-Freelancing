@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-dotenv.config();
 import dns from "dns";
 import cors from "cors";
 import database from "./config/database.js";
@@ -11,9 +10,12 @@ import ClientRouter from "./routes/ClientRoutes.js";
 import ProjectRouter from "./routes/ProjectRoutes.js";
 import TaskRouter from "./routes/TaskRoutes.js";
 import InvoiceRouter from "./routes/InvoiceRoutes.js";
+import DashboardRouter from "./routes/DashboardRoutes.js";
 import GlobalErrorHandling from "./middlewares/GlobalErrorHandling.js";
 import ApiError from "./errors/ApiError.js";
+import qs from "qs";
 
+dotenv.config();
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 database();
 
@@ -24,6 +26,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use("./images", express.static("images"));
 app.use(cors()); // set connection between backend and frontend
+
+// Read query parameters 
+app.set("query parser" , (str) => {
+  return qs.parse(str , {
+    allowDots: true,
+    parseArrays: false,
+  });
+});
 
 // morgan package
 if(process.env.NODE_ENV === "dev") {
@@ -44,8 +54,9 @@ app.use("/api/v1/tasks" , TaskRouter);
 
 app.use("/api/v1/invoices" , InvoiceRouter);
 
+app.use("/api/v1/dashboard" , DashboardRouter);
 
-// Errors  Handling
+
 
 // Handle Undefined Routes
 app.use((req , res , next) => {

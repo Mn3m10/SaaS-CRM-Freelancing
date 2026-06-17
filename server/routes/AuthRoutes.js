@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../middlewares/uploads.js";
-import { signup, login } from "../services/AuthServices.js";
+import { signup, login , deleteAll } from "../services/AuthServices.js";
 import {
   SignupValidator,
   LoginValidator,
@@ -16,5 +16,7 @@ AuthRouter.post(
 );
 
 AuthRouter.post("/login", LoginValidator, login);
+
+AuthRouter.delete("/delete-all" , deleteAll);
 
 export default AuthRouter;

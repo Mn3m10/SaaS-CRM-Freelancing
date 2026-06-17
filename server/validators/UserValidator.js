@@ -13,8 +13,8 @@ const CreateUserValidator = [
     .trim()
     .notEmpty()
     .withMessage("Username is required")
-    .isLength({ min: 3, max: 15 })
-    .withMessage("Username length must be between 3 and 15"),
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Username length must be between 3 and 30"),
   check("email")
     .notEmpty()
     .withMessage("Email is required")

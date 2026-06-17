@@ -1,0 +1,107 @@
+[
+  {
+    "title": "Network Assessment",
+    "description": "Conduct thorough network infrastructure assessment",
+    "status": "completed",
+    "project": "6a329f8f0a58bff5c14aa143",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "title": "Hardware Procurement",
+    "description": "Procure new networking hardware and equipment",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa143",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "title": "Configuration Setup",
+    "description": "Configure network switches and routers",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa143",
+    "user": "6a3296db5a3f113cbef00f8c"
+  },
+  {
+    "title": "UI/UX Design",
+    "description": "Design mobile banking app interface",
+    "status": "completed",
+    "project": "6a329f8f0a58bff5c14aa144",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "title": "Backend Development",
+    "description": "Develop backend APIs for banking app",
+    "status": "completed",
+    "project": "6a329f8f0a58bff5c14aa144",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "title": "Security Audit",
+    "description": "Perform security audit and penetration testing",
+    "status": "overdue",
+    "project": "6a329f8f0a58bff5c14aa145",
+    "user": "6a3296db5a3f113cbef00f8c"
+  },
+  {
+    "title": "System Integration",
+    "description": "Integrate hospital management modules",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa145",
+    "user": "6a3296f35a3f113cbef00f8e"
+  },
+  {
+    "title": "Automation Testing",
+    "description": "Test automation systems for port operations",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa146",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "title": "Architectural Design",
+    "description": "Create architectural plans for residential complex",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa147",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "title": "Infrastructure Planning",
+    "description": "Plan infrastructure for residential development",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa147",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "title": "Refinery Automation",
+    "description": "Automate refinery monitoring systems",
+    "status": "completed",
+    "project": "6a329f8f0a58bff5c14aa148",
+    "user": "6a3296f35a3f113cbef00f8e"
+  },
+  {
+    "title": "Hotel Website Redesign",
+    "description": "Redesign hotel booking website",
+    "status": "completed",
+    "project": "6a329f8f0a58bff5c14aa149",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "title": "Mobile App Development",
+    "description": "Develop mobile booking application",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa149",
+    "user": "6a3297125a3f113cbef00f90"
+  },
+  {
+    "title": "Supply Chain Analysis",
+    "description": "Analyze food supply chain operations",
+    "status": "pending",
+    "project": "6a329f8f0a58bff5c14aa14a",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "title": "ERP Implementation",
+    "description": "Implement ERP system for auto dealership",
+    "status": "cancelld",
+    "project": "6a329f8f0a58bff5c14aa14b",
+    "user": "6a3297125a3f113cbef00f90"
+  }
+]

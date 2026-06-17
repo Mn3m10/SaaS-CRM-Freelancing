@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Saudi Telecom Company",
+    "email": "info@stc.sa",
+    "phone": "+966 11 222 3333",
+    "company": "STC Group",
+    "notes": "Major telecommunications client",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "name": "Al-Rajhi Bank",
+    "email": "contact@alrajhibank.com",
+    "phone": "+966 11 444 5555",
+    "company": "Al-Rajhi Banking",
+    "notes": "Banking sector - priority client",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "name": "SABIC Manufacturing",
+    "email": "info@sabic.com",
+    "phone": "+966 13 333 6666",
+    "company": "SABIC",
+    "notes": "Industrial manufacturing",
+    "user": "6a3296b75a3f113cbef00f8b"
+  },
+  {
+    "name": "Riyadh Medical Center",
+    "email": "info@riyadhmedical.sa",
+    "phone": "+966 11 888 7777",
+    "company": "RMC Health Group",
+    "notes": "Healthcare sector",
+    "user": "6a3296db5a3f113cbef00f8c"
+  },
+  {
+    "name": "Al-Faisal University",
+    "email": "info@alfaisal.edu.sa",
+    "phone": "+966 11 222 9999",
+    "company": "Al-Faisal University",
+    "notes": "Educational institution",
+    "user": "6a3296db5a3f113cbef00f8c"
+  },
+  {
+    "name": "Jeddah Port Authority",
+    "email": "contact@jedport.sa",
+    "phone": "+966 12 333 4444",
+    "company": "Jeddah Port",
+    "notes": "Logistics and shipping",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "name": "Al-Madinah Construction",
+    "email": "info@almadinahconst.com",
+    "phone": "+966 14 555 6666",
+    "company": "Al-Madinah Constructions",
+    "notes": "Real estate development",
+    "user": "6a3296e65a3f113cbef00f8d"
+  },
+  {
+    "name": "Dammam Energy Solutions",
+    "email": "info@dammanenergy.sa",
+    "phone": "+966 13 777 8888",
+    "company": "Dammam Energy",
+    "notes": "Oil and gas sector",
+    "user": "6a3296f35a3f113cbef00f8e"
+  },
+  {
+    "name": "Al-Haramain Hotels",
+    "email": "reservations@haramainhotels.sa",
+    "phone": "+966 12 444 5555",
+    "company": "Al-Haramain Hospitality",
+    "notes": "Premium hotel chain",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "name": "Arabian Food Industries",
+    "email": "info@arabianfood.sa",
+    "phone": "+966 11 666 7777",
+    "company": "Arabian Food",
+    "notes": "Food processing and distribution",
+    "user": "6a3297035a3f113cbef00f8f"
+  },
+  {
+    "name": "Al-Rashid Auto Group",
+    "email": "contact@alrashidauto.sa",
+    "phone": "+966 11 333 8888",
+    "company": "Al-Rashid Motors",
+    "notes": "Automotive dealership",
+    "user": "6a3297125a3f113cbef00f90"
+  },
+  {
+    "name": "Riyadh Tech Solutions",
+    "email": "info@riyadhtech.sa",
+    "phone": "+966 11 999 0000",
+    "company": "RTech Solutions",
+    "notes": "IT services and consulting",
+    "user": "6a3297125a3f113cbef00f90"
+  },
+  {
+    "name": "Al-Jawf Agriculture",
+    "email": "info@aljawfagri.sa",
+    "phone": "+966 14 222 3333",
+    "company": "Al-Jawf Farms",
+    "notes": "Agricultural production",
+    "user": "6a3297205a3f113cbef00f91"
+  },
+  {
+    "name": "Gulf Insurance Company",
+    "email": "info@gulfinsure.sa",
+    "phone": "+966 11 555 4444",
+    "company": "Gulf Insurance",
+    "notes": "Insurance services",
+    "user": "6a3297205a3f113cbef00f91"
+  },
+  {
+    "name": "Al-Baha Mining Corp",
+    "email": "info@albahamining.sa",
+    "phone": "+966 17 666 5555",
+    "company": "Al-Baha Mining",
+    "notes": "Mining and resources",
+    "user": "6a32972d5a3f113cbef00f92"
+  },
+  {
+    "name": "Eastern Pharmaceutical",
+    "email": "info@easternpharma.sa",
+    "phone": "+966 13 888 9999",
+    "company": "Eastern Pharma",
+    "notes": "Pharmaceutical manufacturing",
+    "user": "6a32973a5a3f113cbef00f93"
+  },
+  {
+    "name": "Al-Hassan Trading Co",
+    "email": "info@alhassantrading.sa",
+    "phone": "+966 11 777 6666",
+    "company": "Al-Hassan Trading",
+    "notes": "General trading and imports",
+    "user": "6a32973a5a3f113cbef00f93"
+  },
+  {
+    "name": "Medina Logistics Center",
+    "email": "info@medinalogistics.sa",
+    "phone": "+966 14 444 7777",
+    "company": "Medina Logistics",
+    "notes": "Warehousing and distribution",
+    "user": "6a32974b5a3f113cbef00f94"
+  },
+  {
+    "name": "Al-Qassim Dairy Farms",
+    "email": "info@qassimdairy.sa",
+    "phone": "+966 16 555 8888",
+    "company": "Al-Qassim Dairy",
+    "notes": "Dairy production",
+    "user": "6a32974b5a3f113cbef00f94"
+  },
+  {
+    "name": "Red Sea Development Co",
+    "email": "info@redseadev.sa",
+    "phone": "+966 12 777 9999",
+    "company": "Red Sea Development",
+    "notes": "Real estate and tourism",
+    "user": "6a32974b5a3f113cbef00f94"
+  }
+]

@@ -5,13 +5,13 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 20
+    maxlength: 50
   },
   description: {
     type: String,
     required: true,
     minlength: 10,
-    maxlength: 50,
+    maxlength: 100,
   },
   status: {
     type: String,

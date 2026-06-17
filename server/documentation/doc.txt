@@ -1,0 +1,49 @@
+This is the documentation about our SaaS CRM project 
+here you gonna find all of APIs and any notes about backend
+
+--Note : any process on all APIs you must send the token you get from singup or login api and store it in the localstorage 
+--Note : the data is only on my device because i'm using my database so any request you will do will not return any data and to solve this do the following
+--Note : make a .env file and put inside it your DB_URI then run the data file in data folder (command : node data -i)
+
+---APIs---
+
+=========User APIs=========
+- Signup (POST) => http://localhost:5000/api/v1/auth/signup/
+- Login (POST) => http://localhost:5000/api/v1/auth/login/
+- Create New User (POST) => http://localhost:5000/api/v1/user
+- Get All Users (GET) => http://localhost:5000/api/v1/user
+- Get User By ID (GET) => http://localhost:5000/api/v1/user/(id here)
+- Update User (PUT) => http://localhost:5000/api/v1/user/(id here)
+- Update User Password (PUT) => http://localhost:5000/api/v1/user/pass/(id here)
+- Delete User (DELETE) => http://localhost:5000/api/v1/user/(id here)
+
+=========Client APIs=========
+- Create New Client (POST) => http://localhost:5000/api/v1/clients
+- Get All Clients (GET) => http://localhost:5000/api/v1/clients
+- Get Client By ID (GET) => http://localhost:5000/api/v1/clients/(id here)
+- Update Client (PUT) => http://localhost:5000/api/v1/clients/(id here)
+- Delete Client (DELETE) => http://localhost:5000/api/v1/clients/(id here)
+
+=========Project APIs=========
+- Create New Project (POST) => http://localhost:5000/api/v1/projects
+- Get All Projects (GET) => http://localhost:5000/api/v1/projects
+- Get Project By ID (Get) => http://localhost:5000/api/v1/projects/(id here)
+- Update Project (PUT) => http://localhost:5000/api/v1/projects/(id here)
+- Delete Project (DELETE) => http://localhost:5000/api/v1/projects/(id here)
+
+=========Task APIs=========
+- Create New Task (POST) => http://localhost:5000/api/v1/tasks
+- Get All Tasks (GET) => http://localhost:5000/api/v1/tasks
+- Get Task By ID (GET) => http://localhost:5000/api/v1/tasks/(id here)
+- Update Task (PUT) => http://localhost:5000/api/v1/tasks/(id here)
+- Delete Task (DELETE) => http://localhost:5000/api/v1/tasks/(id here)
+
+=========Invoice APIs=========
+- Create New Invoice (POST) => http://localhost:5000/api/v1/invoices
+- GET All Invoices (GET) => http://localhost:5000/api/v1/invoices
+- Get Invoice By ID (GET) => http://localhost:5000/api/v1/invoices/(id here)
+- Update Invoice (PUT) => http://localhost:5000/api/v1/invoices/(id here)
+- Delete Invoice (DELETE) => http://localhost:5000/api/v1/invoices/(id here)
+
+=========Dashboard API=========
+- Get Dashboard Data (GET) => http://localhost:5000/api/v1/dashboard

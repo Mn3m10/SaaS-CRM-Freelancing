@@ -33,7 +33,7 @@ const signup = async (req, res) => {
       token,
     });
   } catch (error) {
-    return next(new ApiError(error, 500));
+    return next(new ApiError(error.message, 500));
   }
 };
 
@@ -71,4 +71,15 @@ const login = async (req, res) => {
   }
 };
 
-export {signup , login};
+const deleteAll = async (req ,res , next) => {
+  try {
+    await UserModel.deleteMany();
+    return res.status(200).json({
+      message: "All data deleted successfully",
+    })
+  } catch(error) {
+    return next(new ApiError(error , 500));
+  }
+}
+
+export {signup , login , deleteAll};
