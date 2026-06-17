@@ -1,22 +1,22 @@
 class ApiFeatures {
-  constructor(mongooseQuery , queryString) {
+  constructor(mongooseQuery, queryString) {
     this.mongooseQuery = mongooseQuery;
     this.queryString = queryString;
   }
 
   filter() {
-    const reqQueryObject = {...this.queryString};
-    const excludedFields = ["pages","limit","fields","sort"];
+    const reqQueryObject = { ...this.queryString };
+    const excludedFields = ["page", "limit", "fields", "sort", "keyword"];
     excludedFields.forEach((field) => delete reqQueryObject[field]);
     let queryStr = JSON.stringify(reqQueryObject);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g , (match) => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     const parsedQuery = JSON.parse(queryStr);
     this.mongooseQuery = this.mongooseQuery.find(parsedQuery);
     return this;
   }
 
   sort() {
-    if(this.queryString.sort) {
+    if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.mongooseQuery = this.mongooseQuery.sort(sortBy);
     } else {
@@ -26,19 +26,21 @@ class ApiFeatures {
   }
 
   limitingFields() {
-    if(this.queryString.fields) {
+    if (this.queryString.fields) {
       const fields = this.queryString.fields.split(",").join(" ");
       this.mongooseQuery = this.mongooseQuery.select(fields);
+    } else {
+      this.mongooseQuery = this.mongooseQuery.select("-__v");
     }
     return this;
   }
 
   search() {
-    if(this.queryString.keyword) {
+    if (this.queryString.keyword) {
       const query = {};
       query.$or = [
-        {name: {$regex: this.queryString.keyword , $options: "i"}},
-        {description: {$regex: this.queryString.keyword , $options: "i"}}
+        { name: { $regex: this.queryString.keyword, $options: "i" } },
+        { description: { $regex: this.queryString.keyword, $options: "i" } },
       ];
       this.mongooseQuery = this.mongooseQuery.find(query);
     }
@@ -54,13 +56,13 @@ class ApiFeatures {
     paginationData.currentPage = page;
     paginationData.limit = limit;
     paginationData.pageCount = Math.ceil(countDocuments / limit);
-    if(endPageIndex < countDocuments) {
+    if (endPageIndex < countDocuments) {
       paginationData.nextPage = page + 1;
     }
-    if(skip > 0) {
+    if (skip > 0) {
       paginationData.prevPage = page - 1;
     }
-    this.mongooseQuery = this.mongooseQuery.find().skip(skip).limit(limit);
+    this.mongooseQuery = this.mongooseQuery.skip(skip).limit(limit);
     this.paginationResult = paginationData;
     return this;
   }

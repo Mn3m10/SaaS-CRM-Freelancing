@@ -28,6 +28,7 @@ app.use("./images", express.static("images"));
 app.use(cors()); // set connection between backend and frontend
 
 // Read query parameters 
+// GET /api/v1/endpoint?keyword=word&sort=field&page=num&limit=num&fields=field,field,...
 app.set("query parser" , (str) => {
   return qs.parse(str , {
     allowDots: true,

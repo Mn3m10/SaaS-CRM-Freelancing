@@ -21,17 +21,17 @@ const GetAllDocuments = (model) => {
       const documentCount = await model.countDocuments();
       const apifeature = new ApiFeatures(model.find() , req.query);
       apifeature
-      .pagination(documentCount)
       .filter()
       .sort()
       .limitingFields()
-      .search();
+      .search()
+      .pagination(documentCount);
       const {mongooseQuery , paginationResult} = apifeature;
       const documents = await mongooseQuery;
       return res.status(200).json({
         message: "All Documents:",
         paginationResult,
-        documentCount,
+        "total documents":documentCount,
         data: documents,
       });
     } catch (error) {
