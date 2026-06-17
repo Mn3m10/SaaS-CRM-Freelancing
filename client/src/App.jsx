@@ -4,7 +4,9 @@ import React from 'react'
 const App = () => {
   return (
     <h1 style={{textAlign: "center" , fontSize: "60px" , marginTop: "20px"}}>
-      Freelix | CRM 
+      <div className="container">
+        Freelix | CRM 
+      </div>
     </h1>
   )
 }
