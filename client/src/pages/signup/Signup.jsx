@@ -88,8 +88,10 @@ const Signup = () => {
         );
         const result = await response.json();
         if (!response.ok) {
-          failedSignup(result.message || "Failed to create account");
+          failedSignup(result.errors[0].msg || result.message || "Failed to create account");
+          return;
         }
+        console.log(result);
         localStorage.setItem("token", result.token);
         successSignup(result.message || "Account created successfully");
         loginForm.resetForm();

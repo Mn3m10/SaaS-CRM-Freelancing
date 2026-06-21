@@ -20,7 +20,7 @@ const signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      profileImage
+      profileImage,
     });
 
     const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
@@ -39,47 +39,47 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const {email , password} = req.body;
-    if(!email || !password) {
+    const { email, password } = req.body;
+    if (!email || !password) {
       res.status(400).json({
-        message: "All fileds are required"
-      })
+        message: "All fileds are required",
+      });
     }
-    const user = await UserModel.findOne({email});
+    const user = await UserModel.findOne({ email });
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
-    const passMatch = await bcrypt.compare(password , user.password);
-    if(!passMatch) {
+    const passMatch = await bcrypt.compare(password, user.password);
+    if (!passMatch) {
       return res.status(400).json({
-        message: "Invalid email or password"
-      })
+        message: "Invalid email or password",
+      });
     }
-    const token = jwt.sign({userId: user._id} , process.env.SECRET_KEY , {
-      expiresIn: "90d"
-    })
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "90d",
+    });
     return res.status(200).json({
       message: "User logged in successfully",
       data: user,
       token,
-    })
+    });
   } catch (error) {
     return next(new ApiError(error, 500));
   }
 };
 
-const deleteAll = async (req ,res , next) => {
+const deleteAll = async (req, res, next) => {
   try {
     await UserModel.deleteMany();
     return res.status(200).json({
       message: "All data deleted successfully",
-    })
-  } catch(error) {
-    return next(new ApiError(error , 500));
+    });
+  } catch (error) {
+    return next(new ApiError(error, 500));
   }
-}
+};
 
-export {signup , login , deleteAll};
+export { signup, login, deleteAll };
