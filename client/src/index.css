@@ -6,6 +6,7 @@
   /* Primary Brand */
   --color-primary: #2563eb;
   --color-primary-dark: #1e3a8a;
+  --color-dark-blue: #00174B;
   --color-primary-light: #dbe1ff;
 
   /* Backgrounds */
@@ -17,7 +18,10 @@
   /* Text */
   --color-text-primary: #111827;
   --color-text-secondary: #6b7280;
-  --color-text-light: #ffffff;
+  --white: #ffffff;
+  --heading: #191C1D;
+  --paragraph: #434655;
+  --link: #004AC6;
 
   /* Borders */
   --color-border: #e5e7eb;
@@ -36,22 +40,6 @@
   --color-info: #2563eb;
   --color-info-bg: rgba(37, 99, 235, 0.1);
 
-  /* =========================
-    TYPOGRAPHY
-  ========================= */
-
-  --font-family: "Inter", sans-serif;
-
-  /* Headings */
-  --font-size-display: 48px;
-  --font-size-h1: 32px;
-  --font-size-h2: 24px;
-
-  /* Body */
-  --font-size-lg: 18px;
-  --font-size-md: 16px;
-  --font-size-sm: 14px;
-  --font-size-xs: 12px;
 
   /* Font Weights */
   --font-weight-normal: 400;
@@ -59,21 +47,6 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Line Heights */
-  --line-height-display: 56px;
-  --line-height-heading: 40px;
-  --line-height-body: 24px;
-
-  /* =========================
-    SPACING (8px Grid)
-  ========================= */
-
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
 
   /* =========================
     BORDER RADIUS
@@ -97,33 +70,13 @@
   --shadow-lg:
     0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  /* =========================
-     LAYOUT
-  ========================= */
-
-  --sidebar-width: 260px;
-  --topbar-height: 64px;
-  --container-max-width: 1440px;
-  --grid-gutter: 24px;
-
-  /* =========================
-     COMPONENTS
-  ========================= */
-
-  --button-height: 40px;
-  --button-height-lg: 48px;
-
-  --input-height: 40px;
-  --input-height-lg: 48px;
-
-  --focus-ring: 0 0 0 4px rgba(37, 99, 235, 0.2);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-family);
+  font-family: "Inter" , "San-serif";
 }
 
 html {
@@ -134,7 +87,6 @@ html {
   width: 1300px;
   max-width: 95%;
   margin: 0 auto;
-  background-color: red;
 }
 
 button {
@@ -150,4 +102,12 @@ input {
 
 a {
   text-decoration: none;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  color: var(--heading);
+}
+
+p {
+  color: var(--paragraph);
 }

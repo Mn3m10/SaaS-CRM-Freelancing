@@ -1,0 +1,134 @@
+.login-section {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-section > div {
+  height: 100%;
+  flex: 1;
+  padding: 0 100px;
+}
+
+.login-section .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.login-section .form img {
+  width: 100px;
+}
+
+.login-section .form .form-content h1 {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-section .form .form-content p {
+  font-size: 0.8rem;
+}
+
+.login-section .form form {
+  margin-top: 3rem;
+  width: 50%;
+}
+
+.login-section .form form .input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.login-section .form form .input-box:nth-child(2) {
+  margin-top: 1rem;
+}
+
+.login-section .form form .input-box .input {
+  position: relative;
+}
+
+.login-section .form form .input-box .input svg {
+  position: absolute;
+  left: 2%;
+  top: 50%;
+  font-size: 15px;
+  transform: translateY(-50%);
+}
+
+.login-section .form form .input-box input {
+  border: 2px solid var(--color-border-dark);
+  padding: 10px 10px 10px 30px;
+  border-radius: var(--radius-md);
+  width: 100%;
+}
+
+.login-section .form form .input-box input:focus {
+  border: 2px solid var(--color-primary);
+}
+
+.login-section .form form .input-box label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.login-section .form form .input-box .error {
+  font-size: 14px;
+  color: var(--color-error);
+}
+
+.login-section .form form button[type="submit"] {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 15px;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-info);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-section .form form button[type="submit"] svg {
+  transition: 0.3s;
+}
+
+.login-section .form form button[type="submit"]:hover svg {
+  transform: translateX(5px);
+}
+
+.login-section .form form hr {
+  margin: 1.5rem 0;
+}
+
+.login-section .form form .account a {
+  color: var(--link);
+  font-weight: var(--font-weight-semibold);
+}
+
+.login-section .form form .account a:hover {
+  text-decoration: underline;
+}
+
+.login-section .login-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--color-dark-blue);
+  text-align: center;
+}
+
+.login-section .login-content h2 {
+  color: var(--white);
+  font-size: 2rem;
+}
+
+.login-section .login-content p {
+  color: var(--white);
+  font-size: 0.8rem;
+  margin-top: 10px;
+  letter-spacing: 1.5px;
+}

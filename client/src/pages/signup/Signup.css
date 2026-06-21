@@ -1,0 +1,184 @@
+.signup-section {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.signup-section > div {
+  height: 100%;
+  flex: 1;
+  padding: 0 100px;
+}
+
+.signup-section .form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.signup-section .form img {
+  width: 100px;
+}
+
+.signup-section .form .form-content h1 {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.signup-section .form .form-content p {
+  font-size: 0.8rem;
+}
+
+.signup-section .form form {
+  margin-top: 3rem;
+  width: 50%;
+}
+
+.signup-section .form form .input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.signup-section .form form .input-box:nth-child(2) {
+  margin: 1rem 0;
+}
+
+.signup-section .form form .input-box:nth-child(4) {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.signup-section .form form .input-box:nth-child(4) input {
+  width: 20px;
+  height: 20px;
+}
+
+.signup-section .form form .input-box .input {
+  position: relative;
+}
+
+.signup-section .form form .input-box .input svg.icon {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  font-size: 15px;
+  transform: translateY(-50%);
+}
+
+.signup-section .form form .input-box .input svg.eye {
+  position: absolute;
+  top: 50%;
+  font-size: 15px;
+  right: 5%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.signup-section .form form .input-box input {
+  width: 100%;
+  border: 2px solid var(--color-border-dark);
+  padding: 10px 10px 10px 30px;
+  border-radius: var(--radius-md);
+}
+
+.signup-section .form form .input-box input:focus {
+  border: 2px solid var(--color-primary);
+}
+
+.signup-section .form form .input-box label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.signup-section .form form .input-box .error {
+  font-size: 14px;
+  color: var(--color-error);
+}
+
+.signup-section .form form button[type="submit"] {
+  margin-top: 2rem;
+  width: 100%;
+  padding: 15px;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-info);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-section .form form button[type="submit"] svg {
+  transition: 0.3s;
+}
+
+.signup-section .form form button[type="submit"]:hover svg {
+  transform: translateX(5px);
+}
+
+.signup-section .form form hr {
+  margin: 1.5rem 0;
+}
+
+.signup-section .form form .account a {
+  color: var(--link);
+  font-weight: var(--font-weight-semibold);
+}
+
+.signup-section .form form .account a:hover {
+  text-decoration: underline;
+}
+
+.signup-section .signup-content {
+  display: flex;
+  justify-content: end;
+  flex-direction: column;
+  background-color: var(--color-dark-blue);
+}
+
+.signup-section .signup-content .trust {
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.signup-section .signup-content .trust svg{
+  fill: var(--white);
+  padding-right: 10px;
+  font-size: 40px;
+}
+
+.signup-section .signup-content h2 {
+  color: var(--white);
+  font-size: 4rem;
+}
+
+.signup-section .signup-content p {
+  color: var(--white);
+  font-size: 0.8rem;
+  margin-top: 10px;
+  letter-spacing: 1.5px;
+}
+
+.signup-section .signup-content .stats {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.signup-section .signup-content .stats .box {
+  text-align: center;
+  padding: 20px;
+}
+
+.signup-section .signup-content .stats .box h4 {
+  color: var(--white);
+  font-size: 25px;
+  font-weight: var(--font-weight-semibold);
+}
