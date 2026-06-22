@@ -88,7 +88,11 @@ const Signup = () => {
         );
         const result = await response.json();
         if (!response.ok) {
-          failedSignup(result.errors[0].msg || result.message || "Failed to create account");
+          failedSignup(
+            result.errors[0].msg ||
+              result.message ||
+              "Failed to create account",
+          );
           return;
         }
         console.log(result);
@@ -108,7 +112,8 @@ const Signup = () => {
       <div className="form">
         <div className="form-content">
           <div className="logo">
-            <img src={logo} alt="logo" />
+            <img src={logo} alt="logo" /> 
+            <h3>Freelix</h3>
           </div>
           <h1>Create Your Account</h1>
           <p>Precision tracking for modern enterprises.</p>

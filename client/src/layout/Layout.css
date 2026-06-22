@@ -1,0 +1,184 @@
+.layout {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 70px 1fr;
+}
+
+.layout .sidebar {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  background: var(--sidebar-color);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.layout .header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.layout .outlet {
+  grid-column: 2;
+  grid-row: 2;
+  overflow: auto;
+}
+
+.layout .sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.layout .sidebar .sidebar-header .text {
+  text-align: center;
+}
+
+.layout .sidebar nav {
+  margin-top: 30px;
+}
+
+.layout .sidebar nav ul {
+  list-style: none;
+}
+
+.layout .sidebar nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  color: var(--link-color);
+  font-size: 20px;
+  padding: 15px 20px;
+  border-radius: var(--radius-md);
+}
+
+.layout .sidebar nav ul li a svg {
+  fill: var(--link-color);
+}
+
+.layout .sidebar nav ul li a.active {
+  color: var(--color-primary-light);
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.layout .sidebar nav ul li a.active svg {
+  fill: var(--color-primary-light);
+}
+
+.layout .sidebar .new-proj-btn {
+  background-color: var(--link);
+  color: var(--white);
+  font-size: 18px;
+  border-radius: var(--radius-md);
+  padding: 15px 0;
+  display: block;
+  width: 100%;
+  transition: 0.3s ease all;
+}
+
+.layout .sidebar .new-proj-btn span {
+  font-size: 25px;
+}
+
+.layout .sidebar .new-proj-btn:hover {
+  background-color: var(--link-color);
+}
+
+.layout .header {
+  padding: 10px 50px;
+  border-bottom: 1px solid var(--color-border-dark);
+}
+
+.layout .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layout .header .input {
+  width: 700px;
+  height: 50px;
+  position: relative;
+}
+.layout .header .input input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  font-size: 15px;
+  border-radius: var(--radius-md);
+  padding: 0 10px 0 40px;
+}
+
+.layout .header .input svg {
+  position: absolute;
+  cursor: pointer;
+  left: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  z-index: 100;
+}
+
+.layout .header .data {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.layout .header .data .icons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.layout .header .data .icons::after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  background-color: var(--color-border-dark);
+  height: 100%;
+  right: -25px;
+  top: 0;
+}
+
+.layout .header .data .icons .icon svg {
+  font-size: 20px;
+}
+
+.layout .header .data .user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.layout .header .data .user .user-data {
+  text-align: center;
+}
+
+.layout .header .data .user .user-data h3 {
+  font-size: 20px;
+}
+
+.layout .header .data .user .user-data p {
+  font-size: 17px;
+}
+
+.layout .header .data .user .user-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.layout .header .data .user .user-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

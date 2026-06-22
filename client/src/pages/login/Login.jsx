@@ -93,7 +93,7 @@ const Login = () => {
       <div className="form">
         <div className="form-content">
           <div className="logo">
-            <img src={logo} alt="logo" />
+            <img src={logo} alt="logo" /> <h3>Freelix</h3>
           </div>
           <h1>Welcome Back</h1>
           <p>

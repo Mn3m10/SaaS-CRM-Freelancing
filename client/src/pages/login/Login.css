@@ -10,6 +10,16 @@
   padding: 0 100px;
 }
 
+.login-section .form .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-section .form .logo h3 {
+  font-size: 25px;
+}
+
 .login-section .form {
   display: flex;
   flex-direction: column;

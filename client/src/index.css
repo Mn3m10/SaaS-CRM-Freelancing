@@ -39,6 +39,7 @@
 
   --color-info: #2563eb;
   --color-info-bg: rgba(37, 99, 235, 0.1);
+  --sidebar-color: #B6C4FF;
 
 
   /* Font Weights */
@@ -87,12 +88,16 @@ html {
   width: 1300px;
   max-width: 95%;
   margin: 0 auto;
+  padding: 50px 0;
 }
 
 button {
   cursor: pointer;
   border: none;
   outline: none;
+}
+svg {
+  cursor: pointer;
 }
 
 input {

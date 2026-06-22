@@ -18,6 +18,16 @@
   align-items: start;
 }
 
+.signup-section .form .form-content .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.signup-section .form .form-content .logo h3 {
+  font-size: 25px;
+}
+
 .signup-section .form img {
   width: 100px;
 }
