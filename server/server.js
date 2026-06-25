@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 3000;
 
 // Built-in Middlewares
 app.use(express.json());
-app.use("./images", express.static("images"));
+app.use("/images", express.static("images"));
 app.use(cors()); // set connection between backend and frontend
 
 // Read query parameters 

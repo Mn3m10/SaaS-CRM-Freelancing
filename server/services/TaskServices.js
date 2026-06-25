@@ -32,7 +32,7 @@ const createNewTask = CreateOne(TaskModel);
 //   }
 // };
 
-const getAllTasks = GetAllDocuments(TaskModel);
+const getAllTasks = GetAllDocuments(TaskModel , ["project"]);
 // async (req, res) => {
 //   try {
 //     const tasks = await TaskModel.find().populate("project").populate("user");
@@ -47,7 +47,7 @@ const getAllTasks = GetAllDocuments(TaskModel);
 //   }
 // };
 
-const getSpecificTask = GetOne(TaskModel);
+const getSpecificTask = GetOne(TaskModel , ["project"]);
 // async (req, res) => {
 //   try {
 //     const { id } = req.params;

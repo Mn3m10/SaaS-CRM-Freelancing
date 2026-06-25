@@ -1,0 +1,309 @@
+:root {
+  /* =========================
+    COLORS
+  ========================= */
+
+  /* Primary Brand */
+  --color-primary: #2563eb;
+  --color-primary-dark: #1e3a8a;
+  --color-dark-blue: #00174b;
+  --color-primary-light: #dbe1ff;
+
+  /* Backgrounds */
+  --color-background: #ffffff;
+  --color-background-secondary: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f3f4f5;
+
+  /* Text */
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --white: #ffffff;
+  --heading: #191c1d;
+  --paragraph: #434655;
+  --link: #004ac6;
+
+  /* Borders */
+  --color-border: #e5e7eb;
+  --color-border-dark: #c3c6d7;
+
+  /* Status */
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.1);
+
+  --color-error: #dc2626;
+  --color-error-bg: rgba(220, 38, 38, 0.1);
+
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.1);
+
+  --color-info: #2563eb;
+  --color-info-bg: rgba(37, 99, 235, 0.1);
+  --sidebar-color: #b6c4ff;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* =========================
+    BORDER RADIUS
+  ========================= */
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* =========================
+    SHADOWS / ELEVATION
+  ========================= */
+
+  /* Cards Hover */
+  --shadow-sm:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+
+  /* Modals & Popovers */
+  --shadow-lg:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.profile .container .title h1 {
+  font-size: 30px;
+}
+
+.profile .container .title p {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.profile .container > div {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-dark);
+  margin-top: 30px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.profile .container > div:first-child {
+  border: none;
+  box-shadow: none;
+}
+
+.profile .container .image-box {
+  padding: 20px 25px;
+}
+
+.profile .container .image-box > div {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.profile .container .image-box .image .img-box {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 1px solid var(--color-border-dark);
+}
+
+.profile .container .image-box .image .img-box img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile .container .image-box .image .img-box label {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-info);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.profile .container .image-box .image .img-box label svg {
+  font-size: 15px;
+  fill: var(--white);
+}
+
+.profile .container .image-box .image input[type="file"] {
+  display: none;
+}
+
+.profile .container .image-box .user-data h2 {
+  margin-bottom: 10px;
+  font-size: 23px;
+}
+
+.profile .container .image-box .change-img {
+  margin-top: 30px;
+  padding: 15px 25px;
+  font-size: 18px;
+  color: var(--white);
+  background-color: var(--link);
+  border-radius: var(--radius-md);
+  transition: 0.3s;
+  border: 1px solid transparent;
+}
+
+.profile .container .image-box .change-img:hover {
+  background-color: var(--white);
+  border: 1px solid var(--link);
+  color: var(--link);
+}
+
+.profile .container .image-box .img-btn {
+  background-color: var(--link);
+  padding: 15px 25px;
+  color: var(--white);
+  font-size: 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: 0.3s;
+}
+
+.profile .container .image-box .img-btn:hover {
+  background-color: var(--white);
+  color: var(--link);
+  border-color: var(--link);
+}
+
+.profile .container .profile-title {
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--color-border-dark);
+  background-color: var(--color-surface-hover);
+  font-size: 25px;
+  text-transform: uppercase;
+}
+
+.profile .container .inputs {
+  padding: 20px 25px;
+}
+
+.inputs form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.pass-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.pass-inputs .input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pass-inputs .full-width {
+  grid-column: 1 / 3;
+}
+
+.pass-inputs label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pass-inputs input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.delete-account {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin-top: 30px;
+  background-color: var(--color-surface-hover);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 10px;
+  gap: 20px;
+}
+
+.delete-account h4 {
+  color: var(--color-error);
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.delete-account p {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.delete-account button {
+  background-color: var(--color-error);
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.3s ease;
+}
+
+.delete-account button:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.delete-account button:active {
+  transform: translateY(0);
+}
+
+.profile button[type="submit"] {
+  background-color: var(--color-info);
+  padding: 15px 25px;
+  border-radius: var(--radius-md);
+  color: var(--white);
+  width: fit-content;
+}

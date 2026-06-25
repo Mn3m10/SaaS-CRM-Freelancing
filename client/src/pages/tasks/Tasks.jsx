@@ -1,31 +1,29 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
-  FiCalendar,
-  FiCheckCircle,
-  FiChevronDown,
+  FiPlus,
   FiChevronLeft,
   FiChevronRight,
+  FiCalendar,
+  FiBriefcase,
+  FiCheckCircle,
   FiClock,
-  FiGrid,
-  FiList,
-  FiPlus,
+  FiAlertCircle,
+  FiEdit,
+  FiTrash2,
+  FiChevronDown,
+  FiSearch,
 } from "react-icons/fi";
 import "./Tasks.css";
+import { success, failed } from "../../assets/utils/Toasts";
 
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1"
-).replace(/\/$/, "");
+const API_BASE_URL = "http://localhost:5000/api/v1";
 
 const getAuthHeaders = () => {
-  const token =
-    localStorage.getItem("token") ||
-    localStorage.getItem("accessToken") ||
-    localStorage.getItem("authToken") ||
-    sessionStorage.getItem("token") ||
-    "";
-
-  const headers = {};
+  const token = localStorage.getItem("token") || "";
+  const headers = { "Content-Type": "application/json" };
 
   if (token) {
     headers.Authorization = token.startsWith("Bearer ")
@@ -41,25 +39,20 @@ const getApiError = (payload) =>
   payload?.message ||
   "Something went wrong. Please try again.";
 
-const PAGE_SIZE = 6;
-
-const priorityOrder = {
-  high: 0,
-  medium: 1,
-  low: 2,
+const getStatusLabel = (status) => {
+  const labels = {
+    pending: "Pending",
+    completed: "Completed",
+    overdue: "Overdue",
+    cancelld: "Cancelled",
+  };
+  return labels[status] || status;
 };
 
 const formatDate = (dateValue) => {
-  if (!dateValue) {
-    return "No deadline";
-  }
-
+  if (!dateValue) return "No deadline";
   const date = new Date(dateValue);
-
-  if (Number.isNaN(date.getTime())) {
-    return "No deadline";
-  }
-
+  if (isNaN(date.getTime())) return "No deadline";
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -67,232 +60,206 @@ const formatDate = (dateValue) => {
   }).format(date);
 };
 
-const getInitials = (name) => {
-  if (!name) {
-    return "ME";
-  }
-
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-};
-
-const getAssigneeName = (user) => {
-  if (!user || typeof user !== "object") {
-    return "Me";
-  }
-
-  const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
-
-  return user.name || fullName || user.username || "Me";
-};
-
-const getTaskStatus = (task) => {
-  const currentStatus = String(task.status || "pending").toLowerCase();
-
-  if (currentStatus === "completed") {
-    return "completed";
-  }
-
-  if (currentStatus === "cancelld" || currentStatus === "cancelled") {
-    return "cancelled";
-  }
-
-  const deadline = task.deadline ? new Date(task.deadline) : null;
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-
-  if (deadline && !Number.isNaN(deadline.getTime()) && deadline < today) {
-    return "overdue";
-  }
-
-  return currentStatus === "overdue" ? "overdue" : "pending";
-};
-
-const isDueThisWeek = (deadline, status) => {
-  if (!deadline || status === "completed" || status === "cancelled") {
-    return false;
-  }
-
-  const date = new Date(deadline);
-  const today = new Date();
-  const nextWeek = new Date();
-
-  today.setHours(0, 0, 0, 0);
-  nextWeek.setHours(23, 59, 59, 999);
-  nextWeek.setDate(nextWeek.getDate() + 7);
-
-  return !Number.isNaN(date.getTime()) && date >= today && date <= nextWeek;
-};
+const STATUS_OPTIONS = ["pending", "completed", "overdue", "cancelld"];
 
 const Tasks = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [tasks, setTasks] = useState([]);
-  const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState("");
-
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [priorityFilter, setPriorityFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("dueDate");
-  const [viewMode, setViewMode] = useState("list");
+  const [error, setError] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTaskIds, setSelectedTaskIds] = useState([]);
+  const [totalTasks, setTotalTasks] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit] = useState(5);
 
-  const loadData = async () => {
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [selectedTaskIds, setSelectedTaskIds] = useState([]);
+  const [deletingTaskId, setDeletingTaskId] = useState(null);
+  const [updatingTaskId, setUpdatingTaskId] = useState(null);
+
+  const loadTasks = async (page = 1, status = "all", sort = "newest", search = "") => {
     setIsLoading(true);
-    setLoadError("");
+    setError("");
 
     try {
-      const [tasksResponse, projectsResponse] = await Promise.all([
-        fetch(`${API_BASE_URL}/tasks?limit=100`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/projects?limit=100`, {
-          headers: getAuthHeaders(),
-        }),
-      ]);
+      const params = new URLSearchParams();
+      params.append("page", page);
+      params.append("limit", limit);
 
-      const [tasksPayload, projectsPayload] = await Promise.all([
-        tasksResponse.json(),
-        projectsResponse.json(),
-      ]);
-
-      if (!tasksResponse.ok) {
-        throw new Error(getApiError(tasksPayload));
+      if (status !== "all") {
+        params.append("status", status);
       }
 
-      if (!projectsResponse.ok) {
-        throw new Error(getApiError(projectsPayload));
+      if (search.trim()) {
+        params.append("search", search.trim());
       }
 
-      setTasks(Array.isArray(tasksPayload.data) ? tasksPayload.data : []);
-      setProjects(
-        Array.isArray(projectsPayload.data) ? projectsPayload.data : []
+      if (sort === "newest") {
+        params.append("sort", "-createdAt");
+      } else if (sort === "oldest") {
+        params.append("sort", "createdAt");
+      } else if (sort === "deadline") {
+        params.append("sort", "deadline");
+      } else if (sort === "title") {
+        params.append("sort", "title");
+      }
+
+      const response = await fetch(
+        `${API_BASE_URL}/tasks?${params.toString()}`,
+        {
+          headers: getAuthHeaders(),
+        },
       );
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(getApiError(payload));
+      }
+
+      const tasksData = Array.isArray(payload.data) ? payload.data : [];
+
+      setTasks(tasksData);
+      setTotalTasks(payload["total documents"] || tasksData.length);
+
+      if (payload.paginationResult) {
+        setCurrentPage(payload.paginationResult.currentPage || 1);
+        setTotalPages(payload.paginationResult.pageCount || 1);
+        setLimit(payload.paginationResult.limit || 5);
+      } else {
+        setTotalPages(Math.ceil(tasksData.length / limit));
+      }
     } catch (error) {
-      setLoadError(error.message || "Unable to load tasks right now.");
+      setError(error.message || "Unable to load tasks.");
       setTasks([]);
-      setProjects([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadData();
+    loadTasks(1, statusFilter, sortBy, searchQuery);
   }, []);
 
   useEffect(() => {
+    if (location.state?.refresh) {
+      loadTasks(currentPage, statusFilter, sortBy, searchQuery);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    loadTasks(1, statusFilter, sortBy, searchQuery);
     setCurrentPage(1);
-  }, [statusFilter, priorityFilter, sortBy]);
+  }, [statusFilter, sortBy]);
 
-  const taskRows = useMemo(() => {
-    const projectById = new Map(
-      projects.map((project) => [project._id || project.id, project])
-    );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentPage === 1) {
+        loadTasks(1, statusFilter, sortBy, searchQuery);
+      } else {
+        setCurrentPage(1);
+      }
+    }, 300);
 
-    return tasks.map((task) => {
-      const projectId =
-        typeof task.project === "object"
-          ? task.project?._id || task.project?.id
-          : task.project;
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
-      const relatedProject = projectById.get(projectId);
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      loadTasks(newPage, statusFilter, sortBy, searchQuery);
+    }
+  };
 
-      const projectName =
-        task.project?.title ||
-        task.project?.name ||
-        relatedProject?.title ||
-        relatedProject?.name ||
-        "No project";
+  const updateTaskStatus = async (taskId, newStatus) => {
+    setUpdatingTaskId(taskId);
 
-      return {
-        id: task._id || task.id,
-        title: task.title || "Untitled task",
-        description: task.description || "",
-        deadline: task.deadline || "",
-        priority: String(task.priority || "medium").toLowerCase(),
-        status: getTaskStatus(task),
-        projectName,
-        assignee: getAssigneeName(task.user),
-      };
-    });
-  }, [tasks, projects]);
+    try {
+      const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status: newStatus }),
+      });
 
-  const filteredTasks = useMemo(() => {
-    const rows = taskRows.filter((task) => {
-      const statusMatches =
-        statusFilter === "all" || task.status === statusFilter;
+      const payload = await response.json();
 
-      const priorityMatches =
-        priorityFilter === "all" || task.priority === priorityFilter;
-
-      return statusMatches && priorityMatches;
-    });
-
-    return [...rows].sort((firstTask, secondTask) => {
-      if (sortBy === "title") {
-        return firstTask.title.localeCompare(secondTask.title);
+      if (!response.ok) {
+        throw new Error(getApiError(payload));
       }
 
-      if (sortBy === "priority") {
-        return (
-          (priorityOrder[firstTask.priority] ?? 3) -
-          (priorityOrder[secondTask.priority] ?? 3)
-        );
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId || task.id === taskId
+            ? { ...task, status: newStatus }
+            : task
+        )
+      );
+
+      success(`Task status updated to ${getStatusLabel(newStatus)}`);
+    } catch (error) {
+      console.error("Error updating task status:", error);
+      failed(error.message || "Failed to update task status");
+    } finally {
+      setUpdatingTaskId(null);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    const task = tasks.find((t) => t._id === taskId || t.id === taskId);
+
+    if (
+      !window.confirm(
+        `Are you sure you want to delete "${task?.title || "this task"}"?`,
+      )
+    ) {
+      return;
+    }
+
+    setDeletingTaskId(taskId);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json();
+        throw new Error(getApiError(payload));
       }
 
-      if (sortBy === "newest") {
-        return String(secondTask.id).localeCompare(String(firstTask.id));
-      }
+      setTasks((prevTasks) =>
+        prevTasks.filter((task) => task._id !== taskId && task.id !== taskId),
+      );
 
-      const firstDeadline = firstTask.deadline
-        ? new Date(firstTask.deadline).getTime()
-        : Number.MAX_SAFE_INTEGER;
+      success("Task deleted successfully");
+      loadTasks(currentPage, statusFilter, sortBy, searchQuery);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      failed(error.message || "Failed to delete task");
+    } finally {
+      setDeletingTaskId(null);
+    }
+  };
 
-      const secondDeadline = secondTask.deadline
-        ? new Date(secondTask.deadline).getTime()
-        : Number.MAX_SAFE_INTEGER;
+  const handleStatusChange = (taskId, currentStatus) => {
+    const currentIndex = STATUS_OPTIONS.indexOf(currentStatus);
+    const nextIndex = (currentIndex + 1) % STATUS_OPTIONS.length;
+    const newStatus = STATUS_OPTIONS[nextIndex];
+    updateTaskStatus(taskId, newStatus);
+  };
 
-      return firstDeadline - secondDeadline;
-    });
-  }, [taskRows, statusFilter, priorityFilter, sortBy]);
+  const pageTasks = tasks;
+  const pageStart = (currentPage - 1) * limit;
 
-  const statistics = useMemo(() => {
-    const completedTasks = taskRows.filter(
-      (task) => task.status === "completed"
-    ).length;
-
-    const overdueTasks = taskRows.filter(
-      (task) => task.status === "overdue"
-    ).length;
-
-    const dueThisWeek = taskRows.filter((task) =>
-      isDueThisWeek(task.deadline, task.status)
-    ).length;
-
-    return {
-      completionRate: taskRows.length
-        ? Math.round((completedTasks / taskRows.length) * 100)
-        : 0,
-      overdueTasks,
-      dueThisWeek,
-    };
-  }, [taskRows]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredTasks.length / PAGE_SIZE));
-  const pageStart = (currentPage - 1) * PAGE_SIZE;
-  const pageTasks = filteredTasks.slice(pageStart, pageStart + PAGE_SIZE);
-
-  const pageTaskIds = pageTasks.map((task) => task.id);
+  const pageTaskIds = pageTasks.map((task) => task._id || task.id);
 
   const areAllPageTasksSelected =
     pageTaskIds.length > 0 &&
@@ -302,7 +269,7 @@ const Tasks = () => {
     setSelectedTaskIds((currentIds) =>
       currentIds.includes(taskId)
         ? currentIds.filter((id) => id !== taskId)
-        : [...currentIds, taskId]
+        : [...currentIds, taskId],
     );
   };
 
@@ -316,333 +283,281 @@ const Tasks = () => {
     });
   };
 
-  const moveToPage = (nextPage) => {
-    setCurrentPage(Math.min(Math.max(nextPage, 1), totalPages));
+  const statistics = {
+    total: totalTasks,
+    completed: tasks.filter((t) => t.status === "completed").length,
+    pending: tasks.filter((t) => t.status === "pending").length,
+    overdue: tasks.filter((t) => t.status === "overdue").length,
+    cancelled: tasks.filter((t) => t.status === "cancelld").length,
   };
 
   return (
     <section className="tasks-page">
-      <div className="tasks-page__header">
-        <div>
-          <p className="tasks-page__eyebrow">Workspace</p>
-          <h1>Tasks</h1>
-          <p>Manage and track your daily productivity.</p>
-        </div>
-
-        <button
-          type="button"
-          className="task-button task-button--primary"
-          onClick={() => navigate("/layout/tasks/add-new-task")}
-        >
-          <FiPlus />
-          New Task
-        </button>
-      </div>
-
-      <div className="tasks-toolbar">
-        <div className="tasks-toolbar__filters">
-          <label className="task-select">
-            <span>Filter by status</span>
-
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-            >
-              <option value="all">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="overdue">Overdue</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-
-            <FiChevronDown />
-          </label>
-
-          <label className="task-select">
-            <span>Filter by priority</span>
-
-            <select
-              value={priorityFilter}
-              onChange={(event) => setPriorityFilter(event.target.value)}
-            >
-              <option value="all">All Priorities</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-            </select>
-
-            <FiChevronDown />
-          </label>
-
-          <label className="task-sort">
-            <span>Sort by:</span>
-
-            <select
-              value={sortBy}
-              onChange={(event) => setSortBy(event.target.value)}
-            >
-              <option value="dueDate">Due Date</option>
-              <option value="newest">Newest</option>
-              <option value="priority">Priority</option>
-              <option value="title">Task Title</option>
-            </select>
-          </label>
-        </div>
-
-        <div className="tasks-toolbar__view-toggle" aria-label="Task view">
-          <button
-            type="button"
-            className={viewMode === "list" ? "is-active" : ""}
-            onClick={() => setViewMode("list")}
-            aria-label="List view"
-            title="List view"
-          >
-            <FiList />
-          </button>
+      <div className="container">
+        <div className="tasks-page__header">
+          <div>
+            <p className="tasks-page__eyebrow">Workspace</p>
+            <h1>Tasks</h1>
+            <p>Manage your project tasks and track progress.</p>
+          </div>
 
           <button
             type="button"
-            className={viewMode === "grid" ? "is-active" : ""}
-            onClick={() => setViewMode("grid")}
-            aria-label="Grid view"
-            title="Grid view"
+            className="task-button task-button--primary"
+            onClick={() => navigate("/layout/tasks/add-new-task")}
           >
-            <FiGrid />
+            <FiPlus />
+            New Task
           </button>
         </div>
-      </div>
 
-      {loadError && (
-        <div className="tasks-message tasks-message--error">{loadError}</div>
-      )}
+        <div className="tasks-summary-grid">
+          <article className="task-summary-card">
+            <div className="task-summary-card__icon task-summary-card__icon--primary">
+              <FiBriefcase />
+            </div>
+            <div>
+              <p>Total Tasks</p>
+              <strong>{statistics.total}</strong>
+              <span>All tasks</span>
+            </div>
+          </article>
 
-      {viewMode === "list" ? (
-        <div className="tasks-table-card">
-          <div className="tasks-table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th className="tasks-table__checkbox">
-                    <input
-                      type="checkbox"
-                      checked={areAllPageTasksSelected}
-                      onChange={togglePageSelection}
-                      aria-label="Select all visible tasks"
-                    />
-                  </th>
+          <article className="task-summary-card">
+            <div className="task-summary-card__icon task-summary-card__icon--success">
+              <FiCheckCircle />
+            </div>
+            <div>
+              <p>Completed</p>
+              <strong>{statistics.completed}</strong>
+              <span>Done</span>
+            </div>
+          </article>
 
-                  <th>Task Title</th>
-                  <th>Related Project</th>
-                  <th>Assignee</th>
-                  <th>Priority</th>
-                  <th>Due Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
+          <article className="task-summary-card">
+            <div className="task-summary-card__icon task-summary-card__icon--warning">
+              <FiClock />
+            </div>
+            <div>
+              <p>Pending</p>
+              <strong>{statistics.pending}</strong>
+              <span>In progress</span>
+            </div>
+          </article>
 
-              <tbody>
-                {isLoading ? (
+          <article className="task-summary-card">
+            <div className="task-summary-card__icon task-summary-card__icon--danger">
+              <FiAlertCircle />
+            </div>
+            <div>
+              <p>Overdue</p>
+              <strong>{statistics.overdue}</strong>
+              <span>Need attention</span>
+            </div>
+          </article>
+
+          <article className="task-summary-card">
+            <div className="task-summary-card__icon task-summary-card__icon--secondary">
+              <FiCheckCircle />
+            </div>
+            <div>
+              <p>Cancelled</p>
+              <strong>{statistics.cancelled}</strong>
+              <span>Cancelled tasks</span>
+            </div>
+          </article>
+        </div>
+
+        <div className="tasks-toolbar">
+          <div className="tasks-toolbar__filters">
+            <div className="tasks-search">
+              <FiSearch className="tasks-search__icon" />
+              <input
+                type="text"
+                placeholder="Search tasks..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="tasks-search__input"
+              />
+            </div>
+
+            <label className="task-select">
+              <span>Filter by status</span>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="overdue">Overdue</option>
+                <option value="cancelld">Cancelled</option>
+              </select>
+              <FiChevronDown />
+            </label>
+
+            <label className="task-sort">
+              <span>Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="deadline">Deadline</option>
+                <option value="title">Title</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        {error && (
+          <div className="tasks-message tasks-message--error">{error}</div>
+        )}
+
+        {isLoading ? (
+          <div className="tasks-loading">Loading tasks...</div>
+        ) : tasks.length === 0 ? (
+          <div className="tasks-empty">
+            <p>No tasks found. Create your first task!</p>
+          </div>
+        ) : (
+          <div className="tasks-table-card">
+            <div className="tasks-table-scroll">
+              <table>
+                <thead>
                   <tr>
-                    <td colSpan="7" className="tasks-table__state">
-                      Loading your tasks...
-                    </td>
+                    <th className="tasks-table__checkbox">
+                      <input
+                        type="checkbox"
+                        checked={areAllPageTasksSelected}
+                        onChange={togglePageSelection}
+                        aria-label="Select all visible tasks"
+                      />
+                    </th>
+                    <th>Task Title</th>
+                    <th>Project</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ) : pageTasks.length ? (
-                  pageTasks.map((task) => (
-                    <tr key={task.id}>
+                </thead>
+                <tbody>
+                  {pageTasks.map((task) => (
+                    <tr key={task._id || task.id}>
                       <td className="tasks-table__checkbox">
                         <input
                           type="checkbox"
-                          checked={selectedTaskIds.includes(task.id)}
-                          onChange={() => toggleTaskSelection(task.id)}
+                          checked={selectedTaskIds.includes(
+                            task._id || task.id,
+                          )}
+                          onChange={() =>
+                            toggleTaskSelection(task._id || task.id)
+                          }
                           aria-label={`Select ${task.title}`}
                         />
                       </td>
-
                       <td>
                         <div className="task-title-cell">
                           <span
                             className={`task-title-cell__marker task-title-cell__marker--${task.status}`}
                           />
-
-                          <div>
-                            <strong>{task.title}</strong>
-                            <small>
-                              {task.description || "No description"}
-                            </small>
-                          </div>
+                          <strong>{task.title}</strong>
                         </div>
                       </td>
-
                       <td>
                         <span className="task-project-name">
-                          {task.projectName}
+                          {typeof task.project === "object"
+                            ? task.project.title || "No project"
+                            : task.project || "No project"}
                         </span>
                       </td>
-
-                      <td>
-                        <div className="task-assignee">
-                          <span>{getInitials(task.assignee)}</span>
-                          <p>{task.assignee}</p>
-                        </div>
-                      </td>
-
-                      <td>
-                        <span
-                          className={`task-priority task-priority--${task.priority}`}
-                        >
-                          <i />
-                          {task.priority}
-                        </span>
-                      </td>
-
                       <td>
                         <span className="task-date">
                           <FiCalendar />
                           {formatDate(task.deadline)}
                         </span>
                       </td>
-
                       <td>
                         <span
                           className={`task-status task-status--${task.status}`}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleStatusChange(task._id || task.id, task.status)}
+                          title="Click to change status"
                         >
-                          {task.status}
+                          {updatingTaskId === (task._id || task.id) ? "Updating..." : getStatusLabel(task.status)}
                         </span>
                       </td>
+                      <td>
+                        <div className="task-actions">
+                          <button
+                            type="button"
+                            className="task-action-button task-action-button--edit"
+                            onClick={() => {
+                              navigate(
+                                `/layout/tasks/edit/${task._id || task.id}`,
+                              );
+                            }}
+                            title="Edit task"
+                          >
+                            <FiEdit />
+                          </button>
+                          <button
+                            type="button"
+                            className="task-action-button task-action-button--delete"
+                            onClick={() => deleteTask(task._id || task.id)}
+                            disabled={deletingTaskId === (task._id || task.id)}
+                            title="Delete task"
+                          >
+                            {deletingTaskId === (task._id || task.id) ? (
+                              "..."
+                            ) : (
+                              <FiTrash2 />
+                            )}
+                          </button>
+                        </div>
+                      </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="7" className="tasks-table__state">
-                      No tasks match the selected filters.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {!isLoading && filteredTasks.length > 0 && (
-            <div className="tasks-pagination">
-              <p>
-                Showing {pageStart + 1}–
-                {Math.min(pageStart + PAGE_SIZE, filteredTasks.length)} of{" "}
-                {filteredTasks.length} tasks
-              </p>
-
-              <div>
-                <button
-                  type="button"
-                  onClick={() => moveToPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  aria-label="Previous page"
-                >
-                  <FiChevronLeft />
-                </button>
-
-                <span>
-                  {currentPage} / {totalPages}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={() => moveToPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  aria-label="Next page"
-                >
-                  <FiChevronRight />
-                </button>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          )}
-        </div>
-      ) : (
-        <div className="task-grid">
-          {isLoading ? (
-            <div className="tasks-table-card tasks-grid__state">
-              Loading your tasks...
-            </div>
-          ) : pageTasks.length ? (
-            pageTasks.map((task) => (
-              <article className="task-grid-card" key={task.id}>
-                <div className="task-grid-card__top">
-                  <span
-                    className={`task-status task-status--${task.status}`}
+
+            {!isLoading && totalTasks > 0 && (
+              <div className="tasks-pagination">
+                <p>
+                  Showing {pageStart + 1}–
+                  {Math.min(pageStart + limit, totalTasks)} of {totalTasks}{" "}
+                  tasks
+                </p>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    aria-label="Previous page"
                   >
-                    {task.status}
-                  </span>
-
-                  <span
-                    className={`task-priority task-priority--${task.priority}`}
-                  >
-                    <i />
-                    {task.priority}
-                  </span>
-                </div>
-
-                <h3>{task.title}</h3>
-                <p>{task.description || "No description added yet."}</p>
-
-                <div className="task-grid-card__meta">
-                  <span>{task.projectName}</span>
+                    <FiChevronLeft />
+                  </button>
 
                   <span>
-                    <FiCalendar />
-                    {formatDate(task.deadline)}
+                    {currentPage} / {totalPages}
                   </span>
+
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    aria-label="Next page"
+                  >
+                    <FiChevronRight />
+                  </button>
                 </div>
-
-                <div className="task-assignee">
-                  <span>{getInitials(task.assignee)}</span>
-                  <p>{task.assignee}</p>
-                </div>
-              </article>
-            ))
-          ) : (
-            <div className="tasks-table-card tasks-grid__state">
-              No tasks match the selected filters.
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="tasks-summary-grid">
-        <article className="task-summary-card">
-          <div className="task-summary-card__icon task-summary-card__icon--success">
-            <FiCheckCircle />
+              </div>
+            )}
           </div>
-
-          <div>
-            <p>Completion Rate</p>
-            <strong>{statistics.completionRate}%</strong>
-            <span>Across all tasks</span>
-          </div>
-        </article>
-
-        <article className="task-summary-card">
-          <div className="task-summary-card__icon task-summary-card__icon--danger">
-            <FiClock />
-          </div>
-
-          <div>
-            <p>Overdue Tasks</p>
-            <strong>{statistics.overdueTasks}</strong>
-            <span>Need attention today</span>
-          </div>
-        </article>
-
-        <article className="task-summary-card">
-          <div className="task-summary-card__icon task-summary-card__icon--primary">
-            <FiCalendar />
-          </div>
-
-          <div>
-            <p>Due This Week</p>
-            <strong>{statistics.dueThisWeek}</strong>
-            <span>Next 7 days</span>
-          </div>
-        </article>
+        )}
       </div>
     </section>
   );

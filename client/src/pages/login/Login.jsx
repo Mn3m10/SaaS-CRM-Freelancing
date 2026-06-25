@@ -2,55 +2,15 @@
 import React from "react";
 import login_image from "../../assets/images/login-image.png";
 import logo from "../../../public/logo.png";
-import { MdArrowRightAlt } from "react-icons/md";
 import "./Login.css";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Link } from "react-router-dom";
-import { toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { MdEmail } from "react-icons/md";
-import { FaLock } from "react-icons/fa6";
+import { success, failed } from "../../assets/utils/Toasts";
+import { loginValidationSchema } from "../../assets/utils/Validations";
+import LoginForm from "../../components/LoginForm";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const successLogin = (message) => {
-    toast.success(message, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  };
-
-  const failedLogin = (message) => {
-    toast.error(message, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "light",
-      transition: Bounce,
-    });
-  };
-
-  const loginValidationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email formate")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(8, "At least 8 characters")
-      .required("Password is required"),
-  });
 
   const loginForm = useFormik({
     initialValues: {
@@ -74,16 +34,17 @@ const Login = () => {
         );
         const result = await response.json();
         if (!response.ok) {
-          failedLogin(result.message || "Login failed");
+          failed(result.message || "Login failed");
           return;
         }
         localStorage.setItem("token", result.token);
-        successLogin(result.message || "Logged in successfully");
+        localStorage.setItem("user", JSON.stringify(result.data));
+        success(result.message || "Logged in successfully");
         loginForm.resetForm();
-        navigate("/layout");
+        navigate("/layout/dashboard");
       } catch (error) {
         console.log(error);
-        failedLogin("Server error, please try again later");
+        failed("Server error, please try again later");
       }
     },
   });
@@ -101,51 +62,7 @@ const Login = () => {
             precision.
           </p>
         </div>
-        <form onSubmit={loginForm.handleSubmit}>
-          <div className="input-box">
-            <label htmlFor="email">Email Address</label>
-            <div className="input">
-              <MdEmail />
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="exameple@gmail.com"
-                value={loginForm.values.email}
-                onChange={loginForm.handleChange}
-                onBlur={loginForm.handleBlur}
-              />
-            </div>
-            {loginForm.touched.email && loginForm.errors.email && (
-              <span className="error">{loginForm.errors.email}</span>
-            )}
-          </div>
-          <div className="input-box">
-            <label htmlFor="password">Password</label>
-            <div className="input">
-              <FaLock />
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="*********"
-                value={loginForm.values.password}
-                onChange={loginForm.handleChange}
-                onBlur={loginForm.handleBlur}
-              />
-            </div>
-            {loginForm.touched.password && loginForm.errors.password && (
-              <span className="error">{loginForm.errors.password}</span>
-            )}
-          </div>
-          <button type="submit">
-            Login <MdArrowRightAlt />
-          </button>
-          <hr />
-          <p className="account">
-            Don't have an account ? <Link to="/singup">Create new account</Link>
-          </p>
-        </form>
+        <LoginForm loginForm={loginForm}/>
       </div>
       <div className="login-content">
         <div className="img">

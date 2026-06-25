@@ -1,6 +1,12 @@
 import express from "express";
 import upload from "../middlewares/uploads.js";
-import { signup, login , deleteAll } from "../services/AuthServices.js";
+import protectedRoute from "../middlewares/protected.js";
+import {
+  signup,
+  login,
+  deleteAll,
+  setUserProfileImage,
+} from "../services/AuthServices.js";
 import {
   SignupValidator,
   LoginValidator,
@@ -8,15 +14,17 @@ import {
 
 const AuthRouter = express.Router();
 
-AuthRouter.post(
-  "/signup",
-  upload.single("profileImage"),
-  SignupValidator,
-  signup,
-);
+AuthRouter.post("/signup", SignupValidator, signup);
 
 AuthRouter.post("/login", LoginValidator, login);
 
-AuthRouter.delete("/delete-all" , deleteAll);
+AuthRouter.post(
+  "/set-user-image",
+  protectedRoute,
+  upload.single("profileImage"),
+  setUserProfileImage,
+);
+
+AuthRouter.delete("/delete-all", deleteAll);
 
 export default AuthRouter;

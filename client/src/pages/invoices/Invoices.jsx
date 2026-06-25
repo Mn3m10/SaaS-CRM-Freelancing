@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   FiCalendar,
   FiChevronDown,
@@ -10,103 +12,32 @@ import {
   FiFileText,
   FiPlus,
   FiSearch,
+  FiEdit,
+  FiTrash2,
 } from "react-icons/fi";
 import "./Invoices.css";
+import { success, failed } from "../../assets/utils/Toasts";
 
-const INVOICES_STORAGE_KEY = "saas_crm_demo_invoices";
+const API_BASE_URL = "http://localhost:5000/api/v1";
 const PAGE_SIZE = 6;
 
-const DEMO_INVOICES = [
-  {
-    id: "invoice-1",
-    invoiceNumber: "INV-1001",
-    clientId: "client-1",
-    clientName: "Olivia Rhye",
-    projectId: "project-1",
-    projectName: "Website Redesign",
-    amount: 4200,
-    status: "paid",
-    dueDate: "2026-05-10",
-    issuedAt: "2026-04-20",
-  },
-  {
-    id: "invoice-2",
-    invoiceNumber: "INV-1002",
-    clientId: "client-2",
-    clientName: "Phoenix Baker",
-    projectId: "project-2",
-    projectName: "Content Strategy",
-    amount: 1850,
-    status: "pending",
-    dueDate: "2026-06-30",
-    issuedAt: "2026-06-01",
-  },
-  {
-    id: "invoice-3",
-    invoiceNumber: "INV-1003",
-    clientId: "client-3",
-    clientName: "Lana Steiner",
-    projectId: "project-3",
-    projectName: "Brand Identity",
-    amount: 3200,
-    status: "overdue",
-    dueDate: "2026-05-26",
-    issuedAt: "2026-05-01",
-  },
-  {
-    id: "invoice-4",
-    invoiceNumber: "INV-1004",
-    clientId: "client-4",
-    clientName: "Demi Wilkinson",
-    projectId: "project-4",
-    projectName: "Mobile App Design",
-    amount: 2750,
-    status: "pending",
-    dueDate: "2026-07-08",
-    issuedAt: "2026-06-08",
-  },
-  {
-    id: "invoice-5",
-    invoiceNumber: "INV-1005",
-    clientId: "client-5",
-    clientName: "Candice Wu",
-    projectId: "project-5",
-    projectName: "Product Launch",
-    amount: 5100,
-    status: "paid",
-    dueDate: "2026-06-05",
-    issuedAt: "2026-05-11",
-  },
-  {
-    id: "invoice-6",
-    invoiceNumber: "INV-1006",
-    clientId: "client-7",
-    clientName: "Drew Cano",
-    projectId: "project-6",
-    projectName: "Landing Page",
-    amount: 1400,
-    status: "cancelled",
-    dueDate: "2026-06-18",
-    issuedAt: "2026-05-29",
-  },
-];
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token") || "";
+  const headers = { "Content-Type": "application/json" };
 
-const getInvoicesFromStorage = () => {
-  try {
-    const savedInvoices = JSON.parse(
-      localStorage.getItem(INVOICES_STORAGE_KEY) || "[]"
-    );
-
-    if (Array.isArray(savedInvoices) && savedInvoices.length > 0) {
-      return savedInvoices;
-    }
-  } catch (error) {
-    console.error("Could not read invoices from local storage.", error);
+  if (token) {
+    headers.Authorization = token.startsWith("Bearer ")
+      ? token
+      : `Bearer ${token}`;
   }
 
-  localStorage.setItem(INVOICES_STORAGE_KEY, JSON.stringify(DEMO_INVOICES));
-  return DEMO_INVOICES;
+  return headers;
 };
+
+const getApiError = (payload) =>
+  payload?.errors?.[0]?.msg ||
+  payload?.message ||
+  "Something went wrong. Please try again.";
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("en-US", {
@@ -116,16 +47,9 @@ const formatCurrency = (value) =>
   }).format(Number(value || 0));
 
 const formatDate = (dateValue) => {
-  if (!dateValue) {
-    return "—";
-  }
-
+  if (!dateValue) return "—";
   const date = new Date(dateValue);
-
-  if (Number.isNaN(date.getTime())) {
-    return "—";
-  }
-
+  if (Number.isNaN(date.getTime())) return "—";
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -133,306 +57,508 @@ const formatDate = (dateValue) => {
   }).format(date);
 };
 
+const getStatusLabel = (status) => {
+  const labels = {
+    paid: "Paid",
+    pending: "Pending",
+    overdue: "Overdue",
+    cancelled: "Cancelled",
+  };
+  return labels[status] || status;
+};
+
+const STATUS_OPTIONS = ["pending", "paid", "overdue", "cancelled"];
+
 const Invoices = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [invoices, setInvoices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("dueDate");
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalInvoices, setTotalInvoices] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit] = useState(PAGE_SIZE);
+  const [deletingInvoiceId, setDeletingInvoiceId] = useState(null);
+  const [updatingInvoiceId, setUpdatingInvoiceId] = useState(null);
+
+  const loadInvoices = async (
+    page = 1,
+    status = "all",
+    sort = "dueDate",
+    search = "",
+  ) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const params = new URLSearchParams();
+      params.append("page", page);
+      params.append("limit", limit);
+
+      if (status !== "all") {
+        params.append("status", status);
+      }
+
+      if (search.trim()) {
+        params.append("search", search.trim());
+      }
+
+      if (sort === "dueDate") {
+        params.append("sort", "dueDate");
+      } else if (sort === "newest") {
+        params.append("sort", "-createdAt");
+      } else if (sort === "amount") {
+        params.append("sort", "-amount");
+      } else if (sort === "client") {
+        params.append("sort", "client.name");
+      }
+
+      const response = await fetch(
+        `${API_BASE_URL}/invoices?${params.toString()}`,
+        {
+          headers: getAuthHeaders(),
+        },
+      );
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(getApiError(payload));
+      }
+
+      const invoicesData = Array.isArray(payload.data) ? payload.data : [];
+
+      setInvoices(invoicesData);
+      setTotalInvoices(payload["total documents"] || invoicesData.length);
+
+      if (payload.paginationResult) {
+        setCurrentPage(payload.paginationResult.currentPage || 1);
+        setTotalPages(payload.paginationResult.pageCount || 1);
+        setLimit(payload.paginationResult.limit || PAGE_SIZE);
+      } else {
+        setTotalPages(Math.ceil(invoicesData.length / limit));
+      }
+    } catch (error) {
+      setError(error.message || "Unable to load invoices.");
+      setInvoices([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadInvoices = () => {
-      setInvoices(getInvoicesFromStorage());
-    };
-
-    loadInvoices();
-
-    window.addEventListener("storage", loadInvoices);
-
-    return () => {
-      window.removeEventListener("storage", loadInvoices);
-    };
+    loadInvoices(1, statusFilter, sortBy, searchValue);
   }, []);
 
   useEffect(() => {
+    if (location.state?.refresh) {
+      loadInvoices(currentPage, statusFilter, sortBy, searchValue);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    loadInvoices(1, statusFilter, sortBy, searchValue);
     setCurrentPage(1);
-  }, [searchValue, statusFilter, sortBy]);
+  }, [statusFilter, sortBy]);
 
-  const filteredInvoices = useMemo(() => {
-    const search = searchValue.trim().toLowerCase();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentPage === 1) {
+        loadInvoices(1, statusFilter, sortBy, searchValue);
+      } else {
+        setCurrentPage(1);
+      }
+    }, 300);
 
-    const result = invoices.filter((invoice) => {
-      const statusMatches =
-        statusFilter === "all" || invoice.status === statusFilter;
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
-      const searchableText = [
-        invoice.invoiceNumber,
-        invoice.clientName,
-        invoice.projectName,
-      ]
-        .join(" ")
-        .toLowerCase();
+  const updateInvoiceStatus = async (invoiceId, newStatus) => {
+    setUpdatingInvoiceId(invoiceId);
 
-      return statusMatches && searchableText.includes(search);
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/invoices/${invoiceId}`, {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status: newStatus }),
+      });
 
-    return [...result].sort((firstInvoice, secondInvoice) => {
-      if (sortBy === "newest") {
-        return (
-          new Date(secondInvoice.issuedAt).getTime() -
-          new Date(firstInvoice.issuedAt).getTime()
-        );
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(getApiError(payload));
       }
 
-      if (sortBy === "amount") {
-        return Number(secondInvoice.amount) - Number(firstInvoice.amount);
-      }
-
-      if (sortBy === "client") {
-        return firstInvoice.clientName.localeCompare(secondInvoice.clientName);
-      }
-
-      return (
-        new Date(firstInvoice.dueDate).getTime() -
-        new Date(secondInvoice.dueDate).getTime()
+      setInvoices((prevInvoices) =>
+        prevInvoices.map((invoice) =>
+          invoice._id === invoiceId || invoice.id === invoiceId
+            ? { ...invoice, status: newStatus }
+            : invoice,
+        ),
       );
-    });
-  }, [invoices, searchValue, statusFilter, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredInvoices.length / PAGE_SIZE));
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const currentInvoices = filteredInvoices.slice(
-    startIndex,
-    startIndex + PAGE_SIZE
-  );
+      success(`Invoice status updated to ${getStatusLabel(newStatus)}`);
+    } catch (error) {
+      console.error("Error updating invoice status:", error);
+      failed(error.message || "Failed to update invoice status");
+    } finally {
+      setUpdatingInvoiceId(null);
+    }
+  };
+
+  const deleteInvoice = async (invoiceId) => {
+    const invoice = invoices.find(
+      (inv) => inv._id === invoiceId || inv.id === invoiceId,
+    );
+
+    if (
+      !window.confirm(
+        `Are you sure you want to delete invoice "${invoice?.invoiceNumber || "this invoice"}"?`,
+      )
+    ) {
+      return;
+    }
+
+    setDeletingInvoiceId(invoiceId);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/invoices/${invoiceId}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json();
+        throw new Error(getApiError(payload));
+      }
+
+      setInvoices((prevInvoices) =>
+        prevInvoices.filter(
+          (inv) => inv._id !== invoiceId && inv.id !== invoiceId,
+        ),
+      );
+
+      success("Invoice deleted successfully");
+      loadInvoices(currentPage, statusFilter, sortBy, searchValue);
+    } catch (error) {
+      console.error("Error deleting invoice:", error);
+      failed(error.message || "Failed to delete invoice");
+    } finally {
+      setDeletingInvoiceId(null);
+    }
+  };
+
+  const handleStatusChange = (invoiceId, currentStatus) => {
+    const currentIndex = STATUS_OPTIONS.indexOf(currentStatus);
+    const nextIndex = (currentIndex + 1) % STATUS_OPTIONS.length;
+    const newStatus = STATUS_OPTIONS[nextIndex];
+    updateInvoiceStatus(invoiceId, newStatus);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      loadInvoices(newPage, statusFilter, sortBy, searchValue);
+    }
+  };
+
+  const pageInvoices = invoices;
+  const startIndex = (currentPage - 1) * limit;
 
   const paidAmount = invoices
     .filter((invoice) => invoice.status === "paid")
     .reduce((total, invoice) => total + Number(invoice.amount || 0), 0);
 
   const pendingAmount = invoices
-    .filter((invoice) =>
-      ["pending", "overdue"].includes(invoice.status)
-    )
+    .filter((invoice) => ["pending", "overdue"].includes(invoice.status))
     .reduce((total, invoice) => total + Number(invoice.amount || 0), 0);
 
   const overdueAmount = invoices
     .filter((invoice) => invoice.status === "overdue")
     .reduce((total, invoice) => total + Number(invoice.amount || 0), 0);
 
-  const changePage = (nextPage) => {
-    setCurrentPage(Math.min(Math.max(nextPage, 1), totalPages));
-  };
-
   return (
     <section className="invoices-page">
-      <div className="invoices-page__header">
-        <div>
-          <p className="invoices-page__eyebrow">Financial Workspace</p>
-          <h1>Invoices</h1>
-          <p>Create, track, and organize invoices for all your client projects.</p>
+      <div className="container">
+        <div className="invoices-page__header">
+          <div>
+            <p className="invoices-page__eyebrow">Financial Workspace</p>
+            <h1>Invoices</h1>
+            <p>
+              Create, track, and organize invoices for all your client projects.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="invoices-button invoices-button--primary"
+            onClick={() => navigate("/layout/invoices/add-new-invoice")}
+          >
+            <FiPlus />
+            Create Invoice
+          </button>
         </div>
 
-        <button
-          type="button"
-          className="invoices-button invoices-button--primary"
-          onClick={() => navigate("/layout/invoices/add-new-invoice")}
-        >
-          <FiPlus />
-          Create Invoice
-        </button>
-      </div>
+        <div className="invoices-summary">
+          <article className="invoice-summary-card">
+            <div className="invoice-summary-card__icon invoice-summary-card__icon--blue">
+              <FiDollarSign />
+            </div>
 
-      <div className="invoices-summary">
-        <article className="invoice-summary-card">
-          <div className="invoice-summary-card__icon invoice-summary-card__icon--blue">
-            <FiDollarSign />
-          </div>
+            <div>
+              <p>Total Paid</p>
+              <strong>{formatCurrency(paidAmount)}</strong>
+              <span>Received from paid invoices</span>
+            </div>
+          </article>
 
-          <div>
-            <p>Total Paid</p>
-            <strong>{formatCurrency(paidAmount)}</strong>
-            <span>Received from paid invoices</span>
-          </div>
-        </article>
+          <article className="invoice-summary-card">
+            <div className="invoice-summary-card__icon invoice-summary-card__icon--yellow">
+              <FiClock />
+            </div>
 
-        <article className="invoice-summary-card">
-          <div className="invoice-summary-card__icon invoice-summary-card__icon--yellow">
-            <FiClock />
-          </div>
+            <div>
+              <p>Outstanding</p>
+              <strong>{formatCurrency(pendingAmount)}</strong>
+              <span>Pending and overdue invoices</span>
+            </div>
+          </article>
 
-          <div>
-            <p>Outstanding</p>
-            <strong>{formatCurrency(pendingAmount)}</strong>
-            <span>Pending and overdue invoices</span>
-          </div>
-        </article>
+          <article className="invoice-summary-card">
+            <div className="invoice-summary-card__icon invoice-summary-card__icon--red">
+              <FiFileText />
+            </div>
 
-        <article className="invoice-summary-card">
-          <div className="invoice-summary-card__icon invoice-summary-card__icon--red">
-            <FiFileText />
-          </div>
-
-          <div>
-            <p>Overdue</p>
-            <strong>{formatCurrency(overdueAmount)}</strong>
-            <span>
-              {invoices.filter((invoice) => invoice.status === "overdue").length}{" "}
-              invoices need attention
-            </span>
-          </div>
-        </article>
-      </div>
-
-      <div className="invoices-toolbar">
-        <label className="invoices-search">
-          <FiSearch />
-          <input
-            type="search"
-            placeholder="Search by invoice number, client or project..."
-            value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
-          />
-        </label>
-
-        <div className="invoices-toolbar__filters">
-          <label className="invoices-select">
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-            >
-              <option value="all">All Statuses</option>
-              <option value="paid">Paid</option>
-              <option value="pending">Pending</option>
-              <option value="overdue">Overdue</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-
-            <FiChevronDown />
-          </label>
-
-          <label className="invoices-sort">
-            <span>Sort by:</span>
-
-            <select
-              value={sortBy}
-              onChange={(event) => setSortBy(event.target.value)}
-            >
-              <option value="dueDate">Due Date</option>
-              <option value="newest">Newest</option>
-              <option value="amount">Amount</option>
-              <option value="client">Client</option>
-            </select>
-
-            <FiChevronDown />
-          </label>
+            <div>
+              <p>Overdue</p>
+              <strong>{formatCurrency(overdueAmount)}</strong>
+              <span>
+                {
+                  invoices.filter((invoice) => invoice.status === "overdue")
+                    .length
+                }{" "}
+                invoices need attention
+              </span>
+            </div>
+          </article>
         </div>
-      </div>
 
-      <div className="invoices-table-card">
-        <div className="invoices-table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Invoice Number</th>
-                <th>Client</th>
-                <th>Related Project</th>
-                <th>Amount</th>
-                <th>Due Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+        <div className="invoices-toolbar">
+          <label className="invoices-search">
+            <FiSearch />
+            <input
+              type="search"
+              placeholder="Search by invoice number, client or project..."
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
+          </label>
 
-            <tbody>
-              {currentInvoices.length ? (
-                currentInvoices.map((invoice) => (
-                  <tr key={invoice.id}>
-                    <td>
-                      <div className="invoice-number-cell">
-                        <span>
-                          <FiFileText />
-                        </span>
+          <div className="invoices-toolbar__filters">
+            <label className="invoices-select">
+              <select
+                value={statusFilter}
+                onChange={(event) => setStatusFilter(event.target.value)}
+              >
+                <option value="all">All Statuses</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="overdue">Overdue</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
 
-                        <strong>{invoice.invoiceNumber}</strong>
-                      </div>
-                    </td>
+              <FiChevronDown />
+            </label>
 
-                    <td>
-                      <div className="invoice-client-cell">
-                        <span>{invoice.clientName?.slice(0, 1).toUpperCase()}</span>
-                        <p>{invoice.clientName}</p>
-                      </div>
-                    </td>
+            <label className="invoices-sort">
+              <span>Sort by:</span>
 
-                    <td>{invoice.projectName}</td>
+              <select
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value)}
+              >
+                <option value="dueDate">Due Date</option>
+                <option value="newest">Newest</option>
+                <option value="amount">Amount</option>
+                <option value="client">Client</option>
+              </select>
 
-                    <td>
-                      <strong className="invoice-amount">
-                        {formatCurrency(invoice.amount)}
-                      </strong>
-                    </td>
+              <FiChevronDown />
+            </label>
+          </div>
+        </div>
 
-                    <td>
-                      <span className="invoice-date">
-                        <FiCalendar />
-                        {formatDate(invoice.dueDate)}
-                      </span>
-                    </td>
+        {error && (
+          <div className="invoices-message invoices-message--error">
+            {error}
+          </div>
+        )}
 
-                    <td>
-                      <span className={`invoice-status invoice-status--${invoice.status}`}>
-                        {invoice.status}
-                      </span>
+        <div className="invoices-table-card">
+          <div className="invoices-table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Invoice Number</th>
+                  <th>Client</th>
+                  <th>Related Project</th>
+                  <th>Amount</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="7" className="invoices-table-empty">
+                      Loading invoices...
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="invoices-table-empty">
-                    No invoices match the selected filters.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                ) : pageInvoices.length ? (
+                  pageInvoices.map((invoice) => (
+                    <tr key={invoice._id || invoice.id}>
+                      <td>
+                        <div className="invoice-number-cell">
+                          <span>
+                            <FiFileText />
+                          </span>
+                          <strong>{invoice.invoiceNumber}</strong>
+                        </div>
+                      </td>
 
-      {filteredInvoices.length > 0 && (
-        <div className="invoices-pagination">
-          <p>
-            Showing {startIndex + 1}–
-            {Math.min(startIndex + PAGE_SIZE, filteredInvoices.length)} of{" "}
-            {filteredInvoices.length} invoices
-          </p>
+                      <td>
+                        <div className="invoice-client-cell">
+                          <span>
+                            {invoice.client?.name?.slice(0, 1).toUpperCase() ||
+                              "?"}
+                          </span>
+                          <p>{invoice.client?.name || "No client"}</p>
+                        </div>
+                      </td>
 
-          <div>
-            <button
-              type="button"
-              onClick={() => changePage(currentPage - 1)}
-              disabled={currentPage === 1}
-              aria-label="Previous page"
-            >
-              <FiChevronLeft />
-            </button>
+                      <td>{invoice.project?.title || "No project"}</td>
 
-            <span>
-              {currentPage} / {totalPages}
-            </span>
+                      <td>
+                        <strong className="invoice-amount">
+                          {formatCurrency(invoice.amount)}
+                        </strong>
+                      </td>
 
-            <button
-              type="button"
-              onClick={() => changePage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              aria-label="Next page"
-            >
-              <FiChevronRight />
-            </button>
+                      <td>
+                        <span className="invoice-date">
+                          <FiCalendar />
+                          {formatDate(invoice.dueDate)}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span
+                          className={`invoice-status invoice-status--${invoice.status}`}
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            handleStatusChange(
+                              invoice._id || invoice.id,
+                              invoice.status,
+                            )
+                          }
+                          title="Click to change status"
+                        >
+                          {updatingInvoiceId === (invoice._id || invoice.id)
+                            ? "Updating..."
+                            : getStatusLabel(invoice.status)}
+                        </span>
+                      </td>
+
+                      <td>
+                        <div className="invoice-actions">
+                          <button
+                            type="button"
+                            className="invoice-action-button invoice-action-button--edit"
+                            onClick={() => {
+                              navigate(
+                                `/layout/invoices/edit/${invoice._id || invoice.id}`,
+                              );
+                            }}
+                            title="Edit invoice"
+                          >
+                            <FiEdit />
+                          </button>
+                          <button
+                            type="button"
+                            className="invoice-action-button invoice-action-button--delete"
+                            onClick={() =>
+                              deleteInvoice(invoice._id || invoice.id)
+                            }
+                            disabled={
+                              deletingInvoiceId === (invoice._id || invoice.id)
+                            }
+                            title="Delete invoice"
+                          >
+                            {deletingInvoiceId ===
+                            (invoice._id || invoice.id) ? (
+                              "..."
+                            ) : (
+                              <FiTrash2 />
+                            )}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="invoices-table-empty">
+                      No invoices match the selected filters.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
-      )}
+
+        {!isLoading && totalInvoices > 0 && (
+          <div className="invoices-pagination">
+            <p>
+              Showing {startIndex + 1}–
+              {Math.min(startIndex + limit, totalInvoices)} of {totalInvoices}{" "}
+              invoices
+            </p>
+
+            <div>
+              <button
+                type="button"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+              >
+                <FiChevronLeft />
+              </button>
+
+              <span>
+                {currentPage} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+              >
+                <FiChevronRight />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
 };

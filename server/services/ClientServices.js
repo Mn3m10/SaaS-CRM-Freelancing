@@ -7,6 +7,8 @@ import {
   UpdateOne,
   DeleteOne,
 } from "../util/HandlerFactory.js";
+import ProjectModel from "../models/ProjectModel.js";
+import InvoiceModel from "../models/InvoiceModel.js";
 
 const createNewClient = CreateOne(ClientModel);
 //  async (req, res) => {
@@ -104,10 +106,54 @@ const deleteClient = DeleteOne(ClientModel);
 //   }
 // };
 
+
+const getClientDetails = async (req, res, next) => {
+  try {
+    const client = await ClientModel.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (!client) {
+      return res.status(404).json({
+        message: "Client not found",
+      });
+    }
+
+    const totalProjects = await ProjectModel.countDocuments({
+      client: client._id,
+      user: req.user._id,
+    });
+
+    const invoices = await InvoiceModel.find({
+      client: client._id,
+      user: req.user._id,
+    });
+
+    const totalValue = invoices.reduce(
+      (sum, invoice) => sum + invoice.amount,
+      0,
+    );
+
+    return res.status(200).json({
+      client,
+      stats: {
+        totalProjects,
+        totalInvoices: invoices.length,
+        totalValue,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export {
   createNewClient,
   getAllClients,
   getSpecificClient,
   updateClient,
   deleteClient,
+  getClientDetails
 };

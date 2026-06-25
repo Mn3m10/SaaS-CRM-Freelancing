@@ -24,12 +24,11 @@ UserRouter.get("/", protectedRoute, getAllUsers);
 
 UserRouter.get("/:id", protectedRoute, GetUserValidator, getSpecificUser);
 
-UserRouter.put("/:id", protectedRoute, UpdateUserValidator, updateUser);
+UserRouter.put("/:id", protectedRoute , UpdateUserValidator, updateUser);
 
 UserRouter.put(
   "/pass/:id",
   protectedRoute,
-  UpdatePasswordValidator,
   updateUserPassword,
 );
 

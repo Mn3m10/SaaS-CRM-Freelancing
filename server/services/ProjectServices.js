@@ -32,7 +32,7 @@ const createNewProject = CreateOne(ProjectModel);
 //   }
 // };
 
-const getAllProjects = GetAllDocuments(ProjectModel);
+const getAllProjects = GetAllDocuments(ProjectModel , ["client"]);
 // async (req, res) => {
 //   try {
 //     const projects = await ProjectModel.find()
@@ -49,7 +49,7 @@ const getAllProjects = GetAllDocuments(ProjectModel);
 //   }
 // };
 
-const getSpecificProject = GetOne(ProjectModel);
+const getSpecificProject = GetOne(ProjectModel , ["client"]);
 // async (req, res) => {
 //   try {
 //     const { id } = req.params;

@@ -83,11 +83,6 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.login-section .form form .input-box .error {
-  font-size: 14px;
-  color: var(--color-error);
-}
-
 .login-section .form form button[type="submit"] {
   margin-top: 2rem;
   width: 100%;

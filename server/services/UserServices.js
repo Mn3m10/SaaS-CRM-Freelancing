@@ -2,7 +2,7 @@ import UserModel from "../models/UserModel.js";
 import bcrypt from "bcryptjs";
 import ApiError from "../errors/ApiError.js";
 
-const createNewUser = async (req, res) => {
+const createNewUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -17,6 +17,7 @@ const createNewUser = async (req, res) => {
 
     const newUser = await UserModel.create({
       name,
+      title,
       email,
       password: hashedPassword,
     });
@@ -30,7 +31,7 @@ const createNewUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
   try {
     const users = await UserModel.find();
     const usersCount = await UserModel.countDocuments();
@@ -51,7 +52,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const getSpecificUser = async (req, res) => {
+const getSpecificUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const theUser = await UserModel.findById(id);
@@ -67,13 +68,14 @@ const getSpecificUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });
+
     if (!updatedUser) {
       return res.status(404).json({
         message: "User not found",
@@ -88,11 +90,44 @@ const updateUser = async (req, res) => {
   }
 };
 
-const updateUserPassword = async (req, res) => {
+const updateUserPassword = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Current password and new password are required",
+      });
+    }
+
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        message: "Current password is incorrect",
+      });
+    }
+
+    const isSameAsOld = await bcrypt.compare(newPassword, user.password);
+    if (isSameAsOld) {
+      return res.status(400).json({
+        message: "New password must be different from current password",
+      });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
     const updatedUser = await UserModel.findByIdAndUpdate(
       id,
       {
@@ -103,11 +138,7 @@ const updateUserPassword = async (req, res) => {
         runValidators: true,
       },
     );
-    if (!updatedUser) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
+
     return res.status(200).json({
       message: "Password updated successfully",
       data: updatedUser,
@@ -117,7 +148,7 @@ const updateUserPassword = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deletedUser = await UserModel.findByIdAndDelete(id);

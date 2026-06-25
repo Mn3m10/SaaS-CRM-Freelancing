@@ -12,15 +12,12 @@ const signup = async (req, res) => {
       });
     }
 
-    const profileImage = req.file ? req.file.filename : null;
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await UserModel.create({
       name,
       email,
       password: hashedPassword,
-      profileImage,
     });
 
     const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
@@ -34,6 +31,31 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     return next(new ApiError(error.message, 500));
+  }
+};
+
+const setUserProfileImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return next(new ApiError("Please upload an image", 400));
+    }
+
+    const user = await UserModel.findByIdAndUpdate(
+      req.user._id,
+      { profileImage: req.file.filename },
+      { new: true, runValidators: true },
+    );
+
+    if (!user) {
+      return next(new ApiError("User not found", 404));
+    }
+
+    return res.status(200).json({
+      message: "Profile image updated successfully",
+      user,
+    });
+  } catch (error) {
+    next(new ApiError(error.message, 500));
   }
 };
 
@@ -82,4 +104,4 @@ const deleteAll = async (req, res, next) => {
   }
 };
 
-export { signup, login, deleteAll };
+export { signup, login, deleteAll, setUserProfileImage };

@@ -24,39 +24,36 @@ import AddInvoice from "./pages/invoices/AddInvoice";
 
 import Profile from "./pages/profile/Profile";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const App = () => {
   return (
     <>
       <ToastContainer />
 
       <Routes>
-        {/* Authentication */}
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Dashboard Layout */}
-        <Route path="/layout" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/layout" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
 
-          {/* Clients */}
-          <Route path="clients" element={<Clients />} />
-          <Route path="clients/add-new-client" element={<AddClient />} />
+            <Route path="clients" element={<Clients />} />
+            <Route path="clients/add-new-client" element={<AddClient />} />
 
-          {/* Projects */}
-          <Route path="projects" element={<Projects />} />
-          <Route path="projects/add-new-project" element={<AddProject />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="projects/add-new-project" element={<AddProject />} />
 
-          {/* Tasks */}
-          <Route path="tasks" element={<Tasks />} />
-          <Route path="tasks/add-new-task" element={<AddTask />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="tasks/add-new-task" element={<AddTask />} />
 
-          {/* Invoices */}
-          <Route path="invoices" element={<Invoices />} />
-          <Route path="invoices/add-new-invoice" element={<AddInvoice />} />
+            <Route path="invoices" element={<Invoices />} />
+            <Route path="invoices/add-new-invoice" element={<AddInvoice />} />
 
-          {/* Profile */}
-          <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
         </Route>
       </Routes>
     </>

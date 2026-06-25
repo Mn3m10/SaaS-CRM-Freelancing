@@ -105,10 +105,6 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.signup-section .form form .input-box .error {
-  font-size: 14px;
-  color: var(--color-error);
-}
 
 .signup-section .form form button[type="submit"] {
   margin-top: 2rem;

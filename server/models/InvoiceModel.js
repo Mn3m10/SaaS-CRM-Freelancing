@@ -7,12 +7,12 @@ const InvoiceSchema = new mongoose.Schema(
       required: true,
     },
     invoiceNumber: {
-      type: "String",
+      type: String,
       required: true,
       unique: true,
     },
     status: {
-      type: "String",
+      type: String,
       enum: ["pending", "paid", "overdue", "cancelled"],
       default: "pending",
     },

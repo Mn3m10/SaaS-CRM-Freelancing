@@ -1,3 +1,5 @@
+// http://localhost:5000/clients?keyword=ahmed&company=Google&sort=name,-createdAt&fields=name,email,company&page=2&limit=5
+
 class ApiFeatures {
   constructor(mongooseQuery, queryString) {
     this.mongooseQuery = mongooseQuery;

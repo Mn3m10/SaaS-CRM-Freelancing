@@ -6,7 +6,7 @@
   /* Primary Brand */
   --color-primary: #2563eb;
   --color-primary-dark: #1e3a8a;
-  --color-dark-blue: #00174B;
+  --color-dark-blue: #00174b;
   --color-primary-light: #dbe1ff;
 
   /* Backgrounds */
@@ -19,9 +19,9 @@
   --color-text-primary: #111827;
   --color-text-secondary: #6b7280;
   --white: #ffffff;
-  --heading: #191C1D;
+  --heading: #191c1d;
   --paragraph: #434655;
-  --link: #004AC6;
+  --link: #004ac6;
 
   /* Borders */
   --color-border: #e5e7eb;
@@ -39,15 +39,13 @@
 
   --color-info: #2563eb;
   --color-info-bg: rgba(37, 99, 235, 0.1);
-  --sidebar-color: #B6C4FF;
-
+  --sidebar-color: #b6c4ff;
 
   /* Font Weights */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-
 
   /* =========================
     BORDER RADIUS
@@ -70,14 +68,13 @@
   /* Modals & Popovers */
   --shadow-lg:
     0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter" , "San-serif";
+  font-family: "Inter", "San-serif";
 }
 
 html {
@@ -89,6 +86,10 @@ html {
   max-width: 95%;
   margin: 0 auto;
   padding: 50px 0;
+}
+
+section {
+  background: #f8f9ff;
 }
 
 button {
@@ -109,10 +110,22 @@ a {
   text-decoration: none;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--heading);
 }
 
 p {
   color: var(--paragraph);
 }
+
+.error {
+  color: var(--color-error);
+  margin-top: 5px;
+  font-size: 15px;
+}
+

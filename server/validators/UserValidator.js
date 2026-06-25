@@ -35,44 +35,65 @@ const CreateUserValidator = [
 
 const UpdateUserValidator = [
   check("id").isMongoId().withMessage("Invlaid user id formate"),
-  ValidationMiddleware
-]
+  ValidationMiddleware,
+];
 
 const UpdatePasswordValidator = [
   check("currentPassword")
-  .notEmpty()
-  .withMessage("Current password is required"),
-  check("passwordConfirm")
-  .notEmpty()
-  .withMessage("Password confirm is required"),
-  check("password")
-  .notEmpty()
-  .withMessage("Password is required")
-  .custom(async(value , {req}) => {
-    const user = await UserModel.findById(req.user._id);
-    if(!user) {
-      throw new Error("User not found")
+    .notEmpty()
+    .withMessage("Current password is required"),
+
+  check("newPassword")
+    .notEmpty()
+    .withMessage("New password is required")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters")
+    .isLength({ max: 30 })
+    .withMessage("Password must be at most 30 characters"),
+
+  check("confirmNewPassword")
+    .notEmpty()
+    .withMessage("Please confirm your new password")
+    .custom((value, { req }) => {
+      if (value !== req.body.newPassword) {
+        throw new Error("Passwords do not match");
+      }
+      return true;
+    }),
+
+  check("currentPassword").custom(async (value, { req }) => {
+    const userId = req.params.id;
+
+    if (!userId) {
+      throw new Error("User ID is required");
     }
-    const isCorrect = await bcrypt.compare(
-      req.body.currentPassword,
-      user.password
-    )
-    if(!isCorrect) {
-      throw new Error("Incorrect current password")
+
+    const user = await UserModel.findById(userId).select("+password");
+    if (!user) {
+      throw new Error("User not found");
     }
-    if(value !== req.body.passwordConfirm) {
-      throw new Error("Password confirm is incorrect")
+
+    const isCorrect = await bcrypt.compare(value, user.password);
+    if (!isCorrect) {
+      throw new Error("Incorrect current password");
     }
+
+    req.user = user;
     return true;
   }),
-  ValidationMiddleware
-]
+
+  ValidationMiddleware,
+];
 
 const DeleteUserValidator = [
-  check("id")
-  .isMongoId()
-  .withMessage("Invalid user id formate"),
+  check("id").isMongoId().withMessage("Invalid user id formate"),
   ValidationMiddleware,
-]
+];
 
-export {GetUserValidator , CreateUserValidator , UpdateUserValidator , UpdatePasswordValidator , DeleteUserValidator}
+export {
+  GetUserValidator,
+  CreateUserValidator,
+  UpdateUserValidator,
+  UpdatePasswordValidator,
+  DeleteUserValidator,
+};

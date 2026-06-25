@@ -20,7 +20,7 @@ const protectedRoute = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return next(new ApiError(error , 500));
+    return next(new ApiError(error, 500));
   }
 };
 

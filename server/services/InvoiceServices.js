@@ -28,7 +28,7 @@ const createNewInvoice = CreateOne(InvoiceModel);
 //   }
 // };
 
-const getAllInvoices = GetAllDocuments(InvoiceModel);
+const getAllInvoices = GetAllDocuments(InvoiceModel, ["client", "project"]);
 // async (req, res) => {
 //   try {
 //     const invoices = await InvoiceModel.find()
@@ -46,7 +46,7 @@ const getAllInvoices = GetAllDocuments(InvoiceModel);
 //   }
 // };
 
-const getSpecificInvoice = GetOne(InvoiceModel);
+const getSpecificInvoice = GetOne(InvoiceModel, ["client", "project"]);
 // async (req, res) => {
 //   try {
 //     const { id } = req.params;
