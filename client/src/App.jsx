@@ -25,6 +25,7 @@ import AddInvoice from "./pages/invoices/AddInvoice";
 import Profile from "./pages/profile/Profile";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import Error from "./components/Error";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/error" element={<Error />}/>
 
         <Route element={<ProtectedRoute />}>
           <Route path="/layout" element={<Layout />}>

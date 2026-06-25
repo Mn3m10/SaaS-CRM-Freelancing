@@ -75,3 +75,50 @@ export const clientValidationSchema = Yup.object({
     .trim()
     .max(1000, "Notes cannot be longer than 1000 characters."),
 });
+
+const getToday = () => new Date().toISOString().split("T")[0];
+export const invoiceValidationSchema = Yup.object({
+  invoiceNumber: Yup.string()
+    .trim()
+    .min(3, "Invoice number must be at least 3 characters.")
+    .max(30, "Invoice number cannot be longer than 30 characters.")
+    .required("Invoice number is required."),
+
+  clientId: Yup.string().required("Please select a client."),
+
+  projectId: Yup.string().required("Please select a project."),
+
+  amount: Yup.number()
+    .typeError("Amount must be a number.")
+    .positive("Amount must be greater than zero.")
+    .required("Invoice amount is required."),
+
+  dueDate: Yup.date()
+    .min(getToday(), "Due date cannot be in the past.")
+    .required("Please select a due date."),
+});
+
+export const projectValidationSchema = Yup.object({
+  title: Yup.string()
+    .trim()
+    .min(5, "Project title must be at least 5 characters.")
+    .max(50, "Project title cannot be longer than 50 characters.")
+    .required("Project title is required."),
+
+  description: Yup.string()
+    .trim()
+    .min(10, "Description must be at least 10 characters.")
+    .max(100, "Description cannot be longer than 100 characters.")
+    .required("Description is required."),
+
+  deadline: Yup.date()
+    .nullable()
+    .test("is-future", "Deadline must be a future date", function (value) {
+      if (!value) return true;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return new Date(value) >= today;
+    }),
+
+  client: Yup.string().required("Please select a client."),
+});

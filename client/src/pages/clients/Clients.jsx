@@ -34,10 +34,6 @@ const getInitials = (name) =>
 
 const PAGE_SIZE = 6;
 
-// Define your API base URL
-const API_BASE_URL = "http://localhost:5000/api/v1/clients";
-
-// Status options for the dropdown
 const STATUS_OPTIONS = ["lead", "active", "inactive"];
 
 const Clients = () => {
@@ -56,7 +52,6 @@ const Clients = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [activeClientsCount, setActiveClientsCount] = useState(0);
 
-  // Fetch client details (projects and totalValue)
   const fetchClientDetails = async (clientId) => {
     try {
       setLoadingDetails((prev) => ({ ...prev, [clientId]: true }));
@@ -64,7 +59,7 @@ const Clients = () => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Please login");
 
-      const url = `${API_BASE_URL}/${clientId}/details`;
+      const url = `http://localhost:5000/api/v1/clients/${clientId}/details`;
       console.log(`Fetching details for client ${clientId} from:`, url);
 
       const response = await fetch(url, {
@@ -83,10 +78,8 @@ const Clients = () => {
       const result = await response.json();
       console.log("Client details response:", result);
 
-      // Extract stats from the response
       const stats = result.stats || {};
 
-      // Update the client with projects and totalValue from stats
       setClients((prevClients) =>
         prevClients.map((client) =>
           client.id === clientId
@@ -102,7 +95,6 @@ const Clients = () => {
       return result;
     } catch (err) {
       console.error(`Error fetching details for client ${clientId}:`, err);
-      // Set default values on error
       setClients((prevClients) =>
         prevClients.map((client) =>
           client.id === clientId
@@ -145,7 +137,7 @@ const Clients = () => {
 
       params.append("fields", "name,email,phone,company,status,createdAt");
 
-      const url = `${API_BASE_URL}?${params.toString()}`;
+      const url = `http://localhost:5000/api/v1/clients?${params.toString()}`;
       console.log("Fetching clients from:", url);
 
       const response = await fetch(url, {
@@ -175,8 +167,8 @@ const Clients = () => {
         phone: client.phone || "No phone number",
         company: client.company || "Independent client",
         notes: client.notes || "",
-        projects: 0, // Will be fetched separately
-        totalValue: 0, // Will be fetched separately
+        projects: 0,
+        totalValue: 0,
         joinedAt: client.createdAt || new Date().toISOString(),
         status: client.status || "lead",
         user: client.user,
@@ -199,7 +191,6 @@ const Clients = () => {
         );
       }
 
-      // Fetch details for each client
       transformedClients.forEach((client) => {
         fetchClientDetails(client.id);
       });
@@ -250,7 +241,7 @@ const Clients = () => {
         throw new Error("Please login to update client status");
       }
 
-      const url = `${API_BASE_URL}/${clientId}`;
+      const url = `http://localhost:5000/api/v1/clients/${clientId}`;
       console.log(`Updating client status at: ${url}`);
 
       const response = await fetch(url, {
@@ -272,7 +263,6 @@ const Clients = () => {
 
       const result = await response.json();
 
-      // Update the client in the local state
       setClients((prevClients) =>
         prevClients.map((client) =>
           client.id === clientId
@@ -281,7 +271,6 @@ const Clients = () => {
         ),
       );
 
-      // Update active clients count
       const oldClient = clients.find((c) => c.id === clientId);
       if (oldClient) {
         setActiveClientsCount((prevCount) => {
@@ -321,7 +310,7 @@ const Clients = () => {
         throw new Error("Please login to delete clients");
       }
 
-      const url = `${API_BASE_URL}/${clientId}`;
+      const url = `http://localhost:5000/api/v1/clients/${clientId}`;
       console.log(`Deleting client at: ${url}`);
 
       const response = await fetch(url, {

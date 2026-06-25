@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaBell } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
@@ -8,6 +9,14 @@ import default_user_img from "../assets/images/default-user.jpg";
 const Navbar = () => {
   const [serach, setSearch] = useState("");
 
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setUserData(user);
+    }
+  }, []);
   return (
     <header className="header">
       <div className="input">
@@ -30,11 +39,14 @@ const Navbar = () => {
         </div>
         <div className="user">
           <div className="user-data">
-            <h3>Name</h3>
-            <p>Jop Title</p>
+            <h3>{userData?.name}</h3>
+            <p>{userData?.title}</p>
           </div>
           <div className="user-img">
-            <img src={default_user_img} alt="user image" />
+            <img
+              src={`${userData?.profileImage ? `http://localhost:5000/images/${userData.profileImage}` : default_user_img}`}
+              alt="user image"
+            />
           </div>
         </div>
       </div>

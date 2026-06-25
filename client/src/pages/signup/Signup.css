@@ -105,7 +105,6 @@
   font-weight: var(--font-weight-semibold);
 }
 
-
 .signup-section .form form button[type="submit"] {
   margin-top: 2rem;
   width: 100%;
@@ -154,7 +153,7 @@
   margin-bottom: 20px;
 }
 
-.signup-section .signup-content .trust svg{
+.signup-section .signup-content .trust svg {
   fill: var(--white);
   padding-right: 10px;
   font-size: 40px;
@@ -187,4 +186,503 @@
   color: var(--white);
   font-size: 25px;
   font-weight: var(--font-weight-semibold);
+}
+
+@media screen and (max-width: 1200px) {
+  .signup-section > div {
+    padding: 0 60px;
+  }
+
+  .signup-section .form form {
+    width: 60%;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .signup-section > div {
+    padding: 0 40px;
+  }
+
+  .signup-section .form form {
+    width: 70%;
+  }
+
+  .signup-section .form .form-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 3rem;
+  }
+
+  .signup-section .signup-content .stats .box h4 {
+    font-size: 22px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .signup-section {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .signup-section > div {
+    height: auto;
+    padding: 50px 40px;
+    flex: none;
+    width: 100%;
+  }
+
+  .signup-section .form {
+    align-items: center;
+    text-align: center;
+  }
+
+  .signup-section .form .form-content .logo {
+    justify-content: center;
+  }
+
+  .signup-section .form .form-content {
+    text-align: center;
+  }
+
+  .signup-section .form form {
+    width: 80%;
+    margin-top: 2rem;
+  }
+
+  .signup-section .form form .input-box .input svg.icon {
+    left: 3%;
+  }
+
+  .signup-section .form form .input-box .input svg.eye {
+    right: 4%;
+  }
+
+  .signup-section .signup-content {
+    padding: 60px 40px;
+    order: -1;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .signup-section .signup-content .trust {
+    justify-content: center;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 2.5rem;
+  }
+
+  .signup-section .signup-content p {
+    font-size: 0.9rem;
+    max-width: 500px;
+  }
+
+  .signup-section .signup-content .stats {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .signup-section > div {
+    padding: 40px 30px;
+  }
+
+  .signup-section .form .form-content .logo img {
+    width: 70px;
+  }
+
+  .signup-section .form .form-content .logo h3 {
+    font-size: 22px;
+  }
+
+  .signup-section .form .form-content h1 {
+    font-size: 1.6rem;
+    margin-top: 1.2rem;
+  }
+
+  .signup-section .form .form-content p {
+    font-size: 0.75rem;
+  }
+
+  .signup-section .form form {
+    width: 90%;
+    margin-top: 1.8rem;
+  }
+
+  .signup-section .form form .input-box input {
+    padding: 8px 10px 8px 30px;
+    font-size: 14px;
+  }
+
+  .signup-section .form form .input-box label {
+    font-size: 14px;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) label {
+    font-size: 13px;
+  }
+
+  .signup-section .form form button[type="submit"] {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  .signup-section .form form hr {
+    margin: 1.2rem 0;
+  }
+
+  .signup-section .form form .account {
+    font-size: 14px;
+  }
+
+  .signup-section .signup-content {
+    padding: 50px 30px;
+  }
+
+  .signup-section .signup-content .trust svg {
+    font-size: 32px;
+  }
+
+  .signup-section .signup-content .trust {
+    font-size: 14px;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 2rem;
+  }
+
+  .signup-section .signup-content p {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+
+  .signup-section .signup-content .stats {
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .signup-section .signup-content .stats .box {
+    padding: 15px;
+  }
+
+  .signup-section .signup-content .stats .box h4 {
+    font-size: 20px;
+  }
+
+  .signup-section .signup-content .stats .box p {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .signup-section > div {
+    padding: 30px 20px;
+  }
+
+  .signup-section .form .form-content .logo img {
+    width: 55px;
+  }
+
+  .signup-section .form .form-content .logo h3 {
+    font-size: 20px;
+  }
+
+  .signup-section .form .form-content h1 {
+    font-size: 1.4rem;
+    margin-top: 1rem;
+  }
+
+  .signup-section .form .form-content p {
+    font-size: 0.7rem;
+  }
+
+  .signup-section .form form {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .signup-section .form form .input-box {
+    gap: 3px;
+  }
+
+  .signup-section .form form .input-box input {
+    padding: 8px 10px 8px 28px;
+    font-size: 13px;
+  }
+
+  .signup-section .form form .input-box .policy {
+    font-size: 14px;
+  }
+
+  .signup-section .form form .input-box .input svg.icon {
+    font-size: 13px;
+    left: 2%;
+  }
+
+  .signup-section .form form .input-box .input svg.eye {
+    font-size: 13px;
+    right: 4%;
+  }
+
+  .signup-section .form form .input-box:nth-child(2) {
+    margin: 0.8rem 0;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) {
+    gap: 8px;
+    margin-top: 0.8rem;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) label {
+    font-size: 12px;
+  }
+
+  .signup-section .form form button[type="submit"] {
+    padding: 10px;
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .signup-section .form form hr {
+    margin: 1rem 0;
+  }
+
+  .signup-section .form form .account {
+    font-size: 13px;
+  }
+
+  .signup-section .signup-content {
+    padding: 40px 20px;
+  }
+
+  .signup-section .signup-content .trust {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .signup-section .signup-content .trust svg {
+    font-size: 28px;
+    padding-right: 8px;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .signup-section .signup-content p {
+    font-size: 0.75rem;
+    letter-spacing: 0.8px;
+  }
+
+  .signup-section .signup-content .stats {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .signup-section .signup-content .stats .box {
+    padding: 12px 20px;
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .signup-section .signup-content .stats .box h4 {
+    font-size: 18px;
+  }
+
+  .signup-section .signup-content .stats .box p {
+    font-size: 11px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .signup-section > div {
+    padding: 25px 15px;
+  }
+
+  .signup-section .form .form-content .logo img {
+    width: 45px;
+  }
+
+  .signup-section .form .form-content .logo h3 {
+    font-size: 18px;
+  }
+
+  .signup-section .form .form-content .logo {
+    gap: 8px;
+  }
+
+  .signup-section .form .form-content h1 {
+    font-size: 1.2rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .signup-section .form .form-content p {
+    font-size: 0.65rem;
+  }
+
+  .signup-section .form form {
+    margin-top: 1.2rem;
+  }
+
+  .signup-section .form form .input-box input {
+    padding: 7px 10px 7px 25px;
+    font-size: 12px;
+    border-width: 1.5px;
+  }
+
+  .signup-section .form form .input-box .input svg.icon {
+    font-size: 12px;
+    left: 3%;
+  }
+
+  .signup-section .form form .input-box .input svg.eye {
+    font-size: 12px;
+    right: 5%;
+  }
+
+  .signup-section .form form .input-box label {
+    font-size: 12px;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) input {
+    width: 14px;
+    height: 14px;
+  }
+
+  .signup-section .form form .input-box:nth-child(4) label {
+    font-size: 11px;
+  }
+
+  .signup-section .form form button[type="submit"] {
+    padding: 8px;
+    font-size: 0.75rem;
+    margin-top: 1.2rem;
+    border-radius: 8px;
+  }
+
+  .signup-section .form form hr {
+    margin: 0.8rem 0;
+  }
+
+  .signup-section .form form .account {
+    font-size: 12px;
+  }
+
+  .signup-section .signup-content {
+    padding: 30px 15px;
+  }
+
+  .signup-section .signup-content .trust {
+    font-size: 11px;
+  }
+
+  .signup-section .signup-content .trust svg {
+    font-size: 22px;
+    padding-right: 6px;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .signup-section .signup-content p {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+  }
+
+  .signup-section .signup-content .stats .box {
+    padding: 10px 15px;
+  }
+
+  .signup-section .signup-content .stats .box h4 {
+    font-size: 16px;
+  }
+
+  .signup-section .signup-content .stats .box p {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .signup-section > div {
+    padding: 20px 12px;
+  }
+
+  .signup-section .form .form-content .logo img {
+    width: 38px;
+  }
+
+  .signup-section .form .form-content .logo h3 {
+    font-size: 16px;
+  }
+
+  .signup-section .form .form-content h1 {
+    font-size: 1rem;
+  }
+
+  .signup-section .form .form-content p {
+    font-size: 0.6rem;
+  }
+
+  .signup-section .form form .input-box input {
+    padding: 6px 8px 6px 22px;
+    font-size: 11px;
+  }
+
+  .signup-section .form form .input-box .input svg.icon {
+    font-size: 11px;
+    left: 2%;
+  }
+
+  .signup-section .form form .input-box .input svg.eye {
+    font-size: 11px;
+    right: 6%;
+  }
+
+  .signup-section .form form button[type="submit"] {
+    font-size: 0.7rem;
+    padding: 7px;
+  }
+
+  .signup-section .form form .account {
+    font-size: 11px;
+  }
+
+  .signup-section .signup-content h2 {
+    font-size: 1.1rem;
+  }
+
+  .signup-section .signup-content p {
+    font-size: 0.6rem;
+  }
+
+  .signup-section .signup-content .stats .box h4 {
+    font-size: 14px;
+  }
+
+  .signup-section .signup-content .stats .box p {
+    font-size: 9px;
+  }
 }

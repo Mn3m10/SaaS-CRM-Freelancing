@@ -165,21 +165,480 @@
 }
 
 .layout .header .data .user .user-data h3 {
-  font-size: 20px;
-}
-
-.layout .header .data .user .user-data p {
   font-size: 17px;
 }
 
+.layout .header .data .user .user-data p {
+  font-size: 15px;
+}
+
 .layout .header .data .user .user-img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  overflow: hidden;
 }
 
 .layout .header .data .user .user-img img {
-  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 1200px) {
+  .layout .header .input {
+    width: 500px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 65px 1fr;
+  }
+
+  .layout .header .input {
+    width: 400px;
+  }
+
+  .layout .header {
+    padding: 10px 30px;
+  }
+
+  .layout .sidebar {
+    padding: 25px 15px;
+  }
+
+  .layout .sidebar nav ul li a {
+    font-size: 17px;
+    padding: 12px 15px;
+  }
+
+  .layout .sidebar .new-proj-btn {
+    font-size: 16px;
+    padding: 12px 0;
+  }
+
+  .layout .header .data .user .user-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .layout .header .data .user .user-data h3 {
+    font-size: 18px;
+  }
+
+  .layout .header .data .user .user-data p {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .layout {
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 60px 1fr;
+  }
+
+  .layout .header .input {
+    width: 250px;
+    height: 42px;
+  }
+
+  .layout .header .input input {
+    font-size: 14px;
+    padding: 0 10px 0 35px;
+  }
+
+  .layout .header .input svg {
+    font-size: 16px;
+    left: 3%;
+  }
+
+  .layout .header {
+    padding: 10px 20px;
+  }
+
+  .layout .header .data {
+    gap: 30px;
+  }
+
+  .layout .header .data .icons {
+    gap: 15px;
+  }
+
+  .layout .header .data .icons::after {
+    right: -15px;
+  }
+
+  .layout .header .data .icons .icon svg {
+    font-size: 18px;
+  }
+
+  .layout .header .data .user {
+    gap: 15px;
+  }
+
+  .layout .header .data .user .user-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .layout .header .data .user .user-data h3 {
+    font-size: 16px;
+  }
+
+  .layout .header .data .user .user-data p {
+    font-size: 13px;
+  }
+
+  .layout .sidebar {
+    padding: 20px 12px;
+  }
+
+  .layout .sidebar .sidebar-header {
+    gap: 10px;
+  }
+
+  .layout .sidebar .sidebar-header .text h2 {
+    font-size: 18px;
+  }
+
+  .layout .sidebar .sidebar-header .text p {
+    font-size: 11px;
+  }
+
+  .layout .sidebar nav {
+    margin-top: 20px;
+  }
+
+  .layout .sidebar nav ul li a {
+    font-size: 15px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .layout .sidebar nav ul li a svg {
+    font-size: 18px;
+  }
+
+  .layout .sidebar .new-proj-btn {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+
+  .layout .sidebar .new-proj-btn span {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .layout {
+    grid-template-columns: 180px 1fr;
+    grid-template-rows: 55px 1fr;
+  }
+
+  .layout .header .input {
+    width: 180px;
+    height: 38px;
+  }
+
+  .layout .header .input input {
+    font-size: 13px;
+    padding: 0 8px 0 32px;
+  }
+
+  .layout .header .input svg {
+    font-size: 14px;
+    left: 4%;
+  }
+
+  .layout .header {
+    padding: 8px 15px;
+  }
+
+  .layout .header .data {
+    gap: 20px;
+  }
+
+  .layout .header .data .icons {
+    gap: 12px;
+  }
+
+  .layout .header .data .icons::after {
+    right: -10px;
+  }
+
+  .layout .header .data .icons .icon svg {
+    font-size: 16px;
+  }
+
+  .layout .header .data .user {
+    gap: 12px;
+  }
+
+  .layout .header .data .user .user-img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .layout .header .data .user .user-data h3 {
+    font-size: 14px;
+  }
+
+  .layout .header .data .user .user-data p {
+    font-size: 11px;
+  }
+
+  .layout .sidebar {
+    padding: 15px 10px;
+  }
+
+  .layout .sidebar .sidebar-header {
+    gap: 8px;
+  }
+
+  .layout .sidebar .sidebar-header .logo img {
+    width: 40px;
+  }
+
+  .layout .sidebar .sidebar-header .text h2 {
+    font-size: 16px;
+  }
+
+  .layout .sidebar .sidebar-header .text p {
+    font-size: 10px;
+  }
+
+  .layout .sidebar nav {
+    margin-top: 15px;
+  }
+
+  .layout .sidebar nav ul li a {
+    font-size: 13px;
+    padding: 8px 10px;
+    gap: 6px;
+    border-radius: 6px;
+  }
+
+  .layout .sidebar nav ul li a svg {
+    font-size: 16px;
+  }
+
+  .layout .sidebar .new-proj-btn {
+    font-size: 12px;
+    padding: 8px 0;
+    border-radius: 6px;
+  }
+
+  .layout .sidebar .new-proj-btn span {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .layout {
+    grid-template-columns: 150px 1fr;
+    grid-template-rows: 50px 1fr;
+  }
+
+  .layout .header .input {
+    width: 130px;
+    height: 34px;
+  }
+
+  .layout .header .input input {
+    font-size: 12px;
+    padding: 0 6px 0 28px;
+  }
+
+  .layout .header .input svg {
+    font-size: 12px;
+    left: 5%;
+  }
+
+  .layout .header {
+    padding: 6px 10px;
+  }
+
+  .layout .header .data {
+    gap: 15px;
+  }
+
+  .layout .header .data .icons {
+    gap: 10px;
+  }
+
+  .layout .header .data .icons::after {
+    right: -8px;
+  }
+
+  .layout .header .data .icons .icon svg {
+    font-size: 14px;
+  }
+
+  .layout .header .data .user {
+    gap: 8px;
+  }
+
+  .layout .header .data .user .user-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .layout .header .data .user .user-data h3 {
+    font-size: 12px;
+  }
+
+  .layout .header .data .user .user-data p {
+    font-size: 10px;
+  }
+
+  .layout .sidebar {
+    padding: 12px 8px;
+  }
+
+  .layout .sidebar .sidebar-header {
+    gap: 6px;
+  }
+
+  .layout .sidebar .sidebar-header .logo img {
+    width: 32px;
+  }
+
+  .layout .sidebar .sidebar-header .text h2 {
+    font-size: 14px;
+  }
+
+  .layout .sidebar .sidebar-header .text p {
+    font-size: 9px;
+  }
+
+  .layout .sidebar nav {
+    margin-top: 12px;
+  }
+
+  .layout .sidebar nav ul li a {
+    font-size: 11px;
+    padding: 6px 8px;
+    gap: 5px;
+    border-radius: 4px;
+  }
+
+  .layout .sidebar nav ul li a svg {
+    font-size: 14px;
+  }
+
+  .layout .sidebar .new-proj-btn {
+    font-size: 11px;
+    padding: 6px 0;
+    border-radius: 4px;
+  }
+
+  .layout .sidebar .new-proj-btn span {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .layout {
+    grid-template-columns: 130px 1fr;
+    grid-template-rows: 45px 1fr;
+  }
+
+  .layout .header .input {
+    width: 100px;
+    height: 30px;
+  }
+
+  .layout .header .input input {
+    font-size: 11px;
+    padding: 0 5px 0 25px;
+  }
+
+  .layout .header .input svg {
+    font-size: 11px;
+    left: 6%;
+  }
+
+  .layout .header {
+    padding: 5px 8px;
+  }
+
+  .layout .header .data {
+    gap: 12px;
+  }
+
+  .layout .header .data .icons {
+    gap: 8px;
+  }
+
+  .layout .header .data .icons::after {
+    right: -6px;
+  }
+
+  .layout .header .data .icons .icon svg {
+    font-size: 12px;
+  }
+
+  .layout .header .data .user {
+    gap: 6px;
+  }
+
+  .layout .header .data .user .user-img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .layout .header .data .user .user-data h3 {
+    font-size: 11px;
+  }
+
+  .layout .header .data .user .user-data p {
+    font-size: 9px;
+  }
+
+  .layout .sidebar {
+    padding: 10px 6px;
+  }
+
+  .layout .sidebar .sidebar-header {
+    gap: 4px;
+  }
+
+  .layout .sidebar .sidebar-header .logo img {
+    width: 28px;
+  }
+
+  .layout .sidebar .sidebar-header .text h2 {
+    font-size: 12px;
+  }
+
+  .layout .sidebar .sidebar-header .text p {
+    font-size: 8px;
+  }
+
+  .layout .sidebar nav {
+    margin-top: 10px;
+  }
+
+  .layout .sidebar nav ul li a {
+    font-size: 10px;
+    padding: 5px 6px;
+    gap: 4px;
+    border-radius: 4px;
+  }
+
+  .layout .sidebar nav ul li a svg {
+    font-size: 12px;
+  }
+
+  .layout .sidebar .new-proj-btn {
+    font-size: 10px;
+    padding: 5px 0;
+    border-radius: 4px;
+  }
+
+  .layout .sidebar .new-proj-btn span {
+    font-size: 14px;
+  }
 }

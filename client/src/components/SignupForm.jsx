@@ -84,7 +84,7 @@ const SignupForm = ({ loginForm }) => {
           onChange={loginForm.handleChange}
           onBlur={loginForm.handleBlur}
         />
-        <p>I agree to the Terms of Service and Privacy Policy.</p>
+        <p className="policy">I agree to the Terms of Service and Privacy Policy.</p>
         {loginForm.touched.password && loginForm.errors.password && (
           <span className="error">{loginForm.errors.terms}</span>
         )}
